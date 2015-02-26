@@ -26,7 +26,7 @@
 #ifndef __DEF_KIWI_DSP_JUCE__
 #define __DEF_KIWI_DSP_JUCE__
 
-#include "../Dsp.h"
+#include "../KiwiDsp/KiwiDsp.h"
 #include <JuceHeader.h>
 
 namespace Kiwi
