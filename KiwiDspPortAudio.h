@@ -21,7 +21,7 @@
  ==============================================================================
  */
 
-#ifdef __KIWI_PORT_AUDIO_WRAPPER__
+#ifdef __KIWI_PORTAUDIO_WRAPPER__
 
 #ifndef __DEF_KIWI_DSP_PORTAUDIO__
 #define __DEF_KIWI_DSP_PORTAUDIO__

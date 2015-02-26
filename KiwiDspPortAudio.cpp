@@ -21,7 +21,7 @@
  ==============================================================================
 */
 
-#ifdef __KIWI_PORT_AUDIO_WRAPPER__
+#ifdef __KIWI_PORTAUDIO_WRAPPER__
 
 #include "KiwiDspPortAudio.h"
 
