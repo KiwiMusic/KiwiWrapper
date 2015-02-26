@@ -21,6 +21,8 @@
  ==============================================================================
  */
 
+#ifdef __KIWI_JUCE_WRAPPER__
+
 #ifndef __DEF_KIWI_DSP_JUCE__
 #define __DEF_KIWI_DSP_JUCE__
 
@@ -29,7 +31,7 @@
 
 namespace Kiwi
 {
-    class JuceDeviceManager : public DspDeviceManager, public juce::AudioIODeviceCallback
+    class KiwiJuceDspDeviceManager : public DspDeviceManager, public juce::AudioIODeviceCallback
     {
         juce::OwnedArray<juce::AudioIODeviceType>   m_drivers;
         string                                      m_driver_name;
@@ -53,12 +55,12 @@ namespace Kiwi
         //! Constructor
         /**
          */
-        JuceDeviceManager();
+        KiwiJuceDspDeviceManager();
         
         //! Destructor
         /**
          */
-        ~JuceDeviceManager();
+        ~KiwiJuceDspDeviceManager();
         
         //! Retrieve the names of the available drivers.
         /** This function retrieves the names of the available drivers.
@@ -181,6 +183,8 @@ namespace Kiwi
         void audioDeviceStopped() override;
     };
 }
+
+#endif
 
 #endif
 

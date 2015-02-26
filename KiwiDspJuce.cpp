@@ -21,11 +21,13 @@
  ==============================================================================
 */
 
-#include "DspJuce.h"
+#ifdef __KIWI_JUCE_WRAPPER__
+
+#include "KiwiDspJuce.h"
 
 namespace Kiwi
 {
-    JuceDeviceManager::JuceDeviceManager() :
+    KiwiJuceDspDeviceManager::KiwiJuceDspDeviceManager() :
     m_driver_name(""),
     m_input_matrix(nullptr),
     m_output_matrix(nullptr)
@@ -39,12 +41,12 @@ namespace Kiwi
         }
     }
     
-    JuceDeviceManager::~JuceDeviceManager()
+    KiwiJuceDspDeviceManager::~KiwiJuceDspDeviceManager()
     {
         close();
     }
     
-    void JuceDeviceManager::getAvailableDrivers(vector<string>& drivers) const
+    void KiwiJuceDspDeviceManager::getAvailableDrivers(vector<string>& drivers) const
     {
         drivers.clear();
         for(int i = 0; i < m_drivers.size(); ++i)
@@ -53,7 +55,7 @@ namespace Kiwi
         }
     }
     
-    juce::AudioIODeviceType* JuceDeviceManager::getDriver() const
+    juce::AudioIODeviceType* KiwiJuceDspDeviceManager::getDriver() const
     {
         for(int i = 0; i < m_drivers.size(); ++i)
         {
@@ -65,12 +67,12 @@ namespace Kiwi
         return nullptr;
     }
     
-    string JuceDeviceManager::getDriverName() const
+    string KiwiJuceDspDeviceManager::getDriverName() const
     {
         return m_driver_name;
     }
     
-    void JuceDeviceManager::getAvailableInputDevices(vector<string>& devices) const
+    void KiwiJuceDspDeviceManager::getAvailableInputDevices(vector<string>& devices) const
     {
         devices.clear();
         juce::AudioIODeviceType* driver = getDriver();
@@ -85,7 +87,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::getAvailableOutputDevices(vector<string>& devices) const
+    void KiwiJuceDspDeviceManager::getAvailableOutputDevices(vector<string>& devices) const
     {
         devices.clear();
         juce::AudioIODeviceType* driver = getDriver();
@@ -100,27 +102,27 @@ namespace Kiwi
         }
     }
     
-    string JuceDeviceManager::getInputDeviceName() const
+    string KiwiJuceDspDeviceManager::getInputDeviceName() const
     {
         return m_setup.inputDeviceName.toStdString();
     }
     
-    string JuceDeviceManager::getOutputDeviceName() const
+    string KiwiJuceDspDeviceManager::getOutputDeviceName() const
     {
         return m_setup.outputDeviceName.toStdString();
     }
     
-    ulong JuceDeviceManager::getNumberOfInputs() const
+    ulong KiwiJuceDspDeviceManager::getNumberOfInputs() const
     {
         return m_setup.inputChannels.getHighestBit() + 1;
     }
     
-    ulong JuceDeviceManager::getNumberOfOutputs() const
+    ulong KiwiJuceDspDeviceManager::getNumberOfOutputs() const
     {
         return m_setup.outputChannels.getHighestBit() + 1;
     }
     
-    void JuceDeviceManager::getAvailableSampleRates(vector<ulong>& samplerates) const
+    void KiwiJuceDspDeviceManager::getAvailableSampleRates(vector<ulong>& samplerates) const
     {
         samplerates.clear();
         if(m_device)
@@ -133,12 +135,12 @@ namespace Kiwi
         }
     }
     
-    ulong JuceDeviceManager::getSampleRate() const
+    ulong KiwiJuceDspDeviceManager::getSampleRate() const
     {
         return (ulong)m_setup.sampleRate;
     }
     
-    void JuceDeviceManager::getAvailableVectorSizes(vector<ulong>& vectorsizes) const
+    void KiwiJuceDspDeviceManager::getAvailableVectorSizes(vector<ulong>& vectorsizes) const
     {
         vectorsizes.clear();
         if(m_device)
@@ -151,12 +153,12 @@ namespace Kiwi
         }
     }
     
-    ulong JuceDeviceManager::getVectorSize() const
+    ulong KiwiJuceDspDeviceManager::getVectorSize() const
     {
         return (ulong)m_setup.bufferSize;
     }
     
-    void JuceDeviceManager::setDriver(string const& driver)
+    void KiwiJuceDspDeviceManager::setDriver(string const& driver)
     {
         if(driver != getDriverName() && isDriverAvailable(driver))
         {
@@ -165,7 +167,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::setInputDevice(string const& device)
+    void KiwiJuceDspDeviceManager::setInputDevice(string const& device)
     {
         if(device != getInputDeviceName() && isInputDeviceAvailable(device))
         {
@@ -174,7 +176,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::setOutputDevice(string const& device)
+    void KiwiJuceDspDeviceManager::setOutputDevice(string const& device)
     {
         if(device != getOutputDeviceName() && isOutputDeviceAvailable(device))
         {
@@ -183,7 +185,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::setSampleRate(ulong const samplerate)
+    void KiwiJuceDspDeviceManager::setSampleRate(ulong const samplerate)
     {
         if(samplerate != getSampleRate() && isSampleRateAvailable(samplerate))
         {
@@ -192,7 +194,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::setVectorSize(ulong const vectorsize)
+    void KiwiJuceDspDeviceManager::setVectorSize(ulong const vectorsize)
     {
         if(vectorsize != getVectorSize() && isVectorSizeAvailable(vectorsize))
         {
@@ -201,7 +203,7 @@ namespace Kiwi
         }
     }
     
-    sample const* JuceDeviceManager::getInputsSamples(const ulong channel) const noexcept
+    sample const* KiwiJuceDspDeviceManager::getInputsSamples(const ulong channel) const noexcept
     {
         if(m_input_matrix && channel < getNumberOfInputs())
         {
@@ -213,7 +215,7 @@ namespace Kiwi
         }
     }
     
-    sample* JuceDeviceManager::getOutputsSamples(const ulong channel) const noexcept
+    sample* KiwiJuceDspDeviceManager::getOutputsSamples(const ulong channel) const noexcept
     {
         if(m_output_matrix && channel < getNumberOfOutputs())
         {
@@ -225,7 +227,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::close()
+    void KiwiJuceDspDeviceManager::close()
     {
         if(m_device)
         {
@@ -266,7 +268,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::initialize()
+    void KiwiJuceDspDeviceManager::initialize()
     {
         juce::AudioIODeviceType* driver = getDriver();
         if(driver)
@@ -338,7 +340,7 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::audioDeviceAboutToStart(juce::AudioIODevice *device)
+    void KiwiJuceDspDeviceManager::audioDeviceAboutToStart(juce::AudioIODevice *device)
     {
         m_setup.bufferSize = m_device->getCurrentBufferSizeSamples();
         m_setup.sampleRate = m_device->getCurrentSampleRate();
@@ -358,12 +360,12 @@ namespace Kiwi
         }
     }
     
-    void JuceDeviceManager::audioDeviceStopped()
+    void KiwiJuceDspDeviceManager::audioDeviceStopped()
     {
         ;
     }
     
-    void JuceDeviceManager::audioDeviceIOCallback(const float** inputChannelData, int numInputChannels, float** outputChannelData, int numOutputChannels, int numSamples)
+    void KiwiJuceDspDeviceManager::audioDeviceIOCallback(const float** inputChannelData, int numInputChannels, float** outputChannelData, int numOutputChannels, int numSamples)
     {
 #ifdef __KIWI_DSP_DOUBLE__
         for(int i = 0; i < numInputChannels; i++)
@@ -406,4 +408,6 @@ namespace Kiwi
 #endif
     }
 }
+
+#endif
 

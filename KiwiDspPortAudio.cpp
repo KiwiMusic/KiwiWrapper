@@ -21,6 +21,8 @@
  ==============================================================================
 */
 
+#ifdef __KIWI_PORT_AUDIO_WRAPPER__
+
 #include "KiwiDspPortAudio.h"
 
 namespace Kiwi
@@ -440,4 +442,6 @@ namespace Kiwi
         delete d;
     }
 }
+
+#endif
 
