@@ -21,12 +21,35 @@
  ==============================================================================
  */
 
-#ifndef __DEF_KIWI_WRAPPER__
-#define __DEF_KIWI_WRAPPER__
+#ifdef __KIWI_JUCE_WRAPPER__
 
-#include "KiwiGuiJuce.h"
-#include "KiwiDspJuce.h"
-#include "KiwiDspPortAudio.h"
+#ifndef __DEF_KIWI_GUI_JUCE__
+#define __DEF_KIWI_GUI_JUCE__
+
+#include "../KiwiGui/KiwiGui.h"
+#include <JuceHeader.h>
+
+namespace Kiwi
+{
+    class KiwiJuceGuiDeviceManager : public GuiDeviceManager
+    {
+    private:
+        
+    public:
+        
+        //! Constructor
+        /**
+         */
+        KiwiJuceGuiDeviceManager();
+        
+        //! Destructor
+        /**
+         */
+        ~KiwiJuceGuiDeviceManager();
+    };
+}
+
+#endif
 
 #endif
 
