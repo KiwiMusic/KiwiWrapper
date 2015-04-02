@@ -35,7 +35,7 @@ namespace Kiwi
     {
         struct DeviceNode
         {
-            const KiwiPortAudioDeviceManager*      device;
+            KiwiPortAudioDeviceManager*        device;
             const ulong                        nins;
             sample *const                      inputs;
             const ulong                        nouts;
@@ -58,11 +58,7 @@ namespace Kiwi
         sample*             m_sample_ins;
         sample*             m_sample_outs;
         vector<sDspContext> m_contexts;
-        mutable mutex       m_mutex;
-        
-        void start();
-        
-        void stop();
+        mutex               m_mutex;
         
         inline void tick() const noexcept
         {
@@ -199,6 +195,16 @@ namespace Kiwi
          @return The outputs sample matrix.
          */
         sample* getOutputsSamples(const ulong channel) const noexcept override;
+        
+        //! Start the device.
+        /** This function starts the device.
+         */
+        void start() override;
+        
+        //! Stop the device.
+        /** This function stops the device.
+         */
+        void stop() override;
     };
 }
 

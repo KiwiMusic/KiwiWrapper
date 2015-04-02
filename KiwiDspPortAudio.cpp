@@ -68,7 +68,6 @@ namespace Kiwi
         m_vectorsize                   = 64;
         m_samplerate                   = 44100;
         m_stream = nullptr;
-        start();
     }
     
     KiwiPortAudioDeviceManager::~KiwiPortAudioDeviceManager()
@@ -330,6 +329,7 @@ namespace Kiwi
     
     void KiwiPortAudioDeviceManager::stop()
     {
+        lock_guard<mutex> guard(m_mutex);
         if(m_stream)
         {
             if(Pa_IsStreamActive(m_stream))
@@ -370,6 +370,7 @@ namespace Kiwi
             stop();
         }
 
+        lock_guard<mutex> guard(m_mutex);
         m_sample_ins    = new sample[m_paraminput.channelCount * m_vectorsize];
         m_sample_outs   = new sample[m_paramoutput.channelCount * m_vectorsize];
         
@@ -401,6 +402,7 @@ namespace Kiwi
     int KiwiPortAudioDeviceManager::callback(const void *inputBuffer, void *outputBuffer, ulong framesPerBuffer, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void *userData)
     {
         DeviceNode* d = (DeviceNode*)userData;
+        lock_guard<mutex> guard(d->device->m_mutex);
 #ifdef __KIWI_DSP_DOUBLE__
         const ulong nins    = d->nins;
         const ulong nouts   = d->nouts;
