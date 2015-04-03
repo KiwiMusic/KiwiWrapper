@@ -24,7 +24,6 @@
 #ifdef __KIWI_JUCE_WRAPPER__
 
 #include "KiwiGuiJucePatcher.h"
-#include "Application.h"
 
 namespace Kiwi
 {
@@ -50,9 +49,10 @@ namespace Kiwi
         setWantsKeyboardFocus(true);
 		setInterceptsMouseClicks(true, true);
         setMouseClickGrabsKeyboardFocus(true);
-        
-        Application::bindToCommandManager(this);
-        Application::bindToKeyMapping(this);
+    
+        int getCommandManager;
+        //Application::bindToCommandManager(this);
+        //Application::bindToKeyMapping(this);
     
 		m_editor         = new juce::TextEditor();
         m_editor->addListener(this);
@@ -245,8 +245,8 @@ namespace Kiwi
 	
 	sObjectView jPatcher::createObjectView(sGuiObject guiObject)
 	{
-        sObject object = static_pointer_cast<Object>(guiObject);
-		return ObjectView::create<jObject>(object, static_pointer_cast<PatcherView>(shared_from_this()));
+        int the_object_should_create_his_own_view;
+		return ObjectView::create<jObject>(guiObject, static_pointer_cast<PatcherView>(shared_from_this()));
 	}
 	
 	void jPatcher::objectViewCreated(sObjectView objectview)
@@ -358,7 +358,9 @@ namespace Kiwi
 		getObjects(objects);
 		getSelection(selobjects);
 		
+        int should_implement_inspector;
 		// update inspector
+        /*
 		if(selobjects.size() == 1)
 		{
             sObject object = static_pointer_cast<Object>(selobjects[0]->getObject());
@@ -373,6 +375,7 @@ namespace Kiwi
 		}
 		
 		Application::commandStatusChanged();
+         */
 	}
 	
 	void jPatcher::updateObjectsAndLinksLayers()
@@ -485,7 +488,7 @@ namespace Kiwi
                         m_iolighter->toFront(false);
                         
                         unselectAll();
-                        Console::post("- templink from inlet created");
+                        cout << "- templink from inlet created" << endl;
                     }
                     else if(m_knock.getPart() == Knock::Outlet)
                     {
@@ -498,11 +501,11 @@ namespace Kiwi
                         m_iolighter->toFront(false);
                         
                         unselectAll();
-                        Console::post("- templink from outlet created");
+                        cout << "- templink from outlet created" << endl;
                     }
                     else if(m_knock.getPart() == Knock::Inside)
                     {
-						Console::post("Hit Object inside");
+						cout << "Hit Object inside" << endl;
                         if(e.mods.isAltDown())
                         {
                             m_copy_on_drag = true;
@@ -531,7 +534,7 @@ namespace Kiwi
 							else
 							{
 								m_object_downstatus = selectOnMouseDown(object, !e.mods.isShiftDown());
-								Console::post("selectOnMouseDown");
+								cout << "selectOnMouseDown" << endl;
 							}
                         }
                     }
@@ -950,16 +953,15 @@ namespace Kiwi
     
 	void jPatcher::textEditorTextChanged(juce::TextEditor& e)
     {
-        //Console::post("textEditorTextChanged");
+        //cout << "textEditorTextChanged" << endl;
     }
     
     void jPatcher::textEditorReturnKeyPressed(juce::TextEditor& e)
     {
-        Dico dico = createObjectDicoAtPosition(e.getText().toStdString(), e.getPosition());
-        e.clear();
         e.setVisible(false);
-        
-        //getPatcher()->add(dico);
+        cout << e.getText().toStdString() << endl;
+        getPatcher()->add(createObjectDicoAtPosition(e.getText().toStdString(), e.getPosition()));
+        e.clear();
     }
     
     void jPatcher::textEditorEscapeKeyPressed(juce::TextEditor& e)
@@ -970,7 +972,7 @@ namespace Kiwi
             object->setVisible(true);
             m_object_edited.reset();
         }
-        Console::post("textEditorEscapeKeyPressed");
+        cout << "textEditorEscapeKeyPressed" << endl;
         e.setVisible(false);
     }
     
@@ -985,6 +987,7 @@ namespace Kiwi
 	
 	void jPatcher::showObjectPopupMenu(sObjectView object)
 	{
+        /*
 		ApplicationCommandManager* commandManager = &Application::getCommandManager();
 		
 		PopupMenu m;
@@ -1000,6 +1003,7 @@ namespace Kiwi
 		m.addCommandItem(commandManager, CommandIDs::addToPresentation);
 		m.addCommandItem(commandManager, CommandIDs::removeFromPresentation);
 		m.show();
+         */
 	}
     
     ApplicationCommandTarget* jPatcher::getNextCommandTarget()
@@ -1009,6 +1013,7 @@ namespace Kiwi
     
     void jPatcher::getAllCommands(Array<CommandID>& commands)
     {
+        /*
 		commands.add(CommandIDs::save);
         //commands.add(StandardApplicationCommandIDs::undo);
         //commands.add(StandardApplicationCommandIDs::redo);
@@ -1043,10 +1048,12 @@ namespace Kiwi
 		commands.add(CommandIDs::showObjectInspector);
 		
 		//CommandIDs::openObjectHelp
+         */
     }
     
     void jPatcher::getCommandInfo(const CommandID commandID, ApplicationCommandInfo& result)
     {
+        /*
         switch(commandID)
         {
 			case CommandIDs::save:
@@ -1203,11 +1210,13 @@ namespace Kiwi
                 result.setInfo (TRANS("[unknown command]"), TRANS("dada"), CommandCategories::view, 0);
                 break;
         }
+         */
     }
     
     bool jPatcher::perform(const InvocationInfo& info)
     {
-        Console::post("perform command");
+        /*
+        cout << "perform command");
         switch (info.commandID)
         {
 			case CommandIDs::save:
@@ -1410,6 +1419,7 @@ namespace Kiwi
         }
         
         return true;
+         */
     }
     
     // ================================================================================ //
@@ -1440,6 +1450,7 @@ namespace Kiwi
     {
         if (objview)
         {
+            /*
             sObject object = static_pointer_cast<Object>(objview->getObject());
             if(object)
             {
@@ -1458,6 +1469,7 @@ namespace Kiwi
                     setBounds(pos.x() - 8., pos.x() - 8., 16., 16.);
                 }
             }
+             */
         }
     }
     
@@ -1465,6 +1477,7 @@ namespace Kiwi
     {
         if (objview)
         {
+            /*
             sObject object = static_pointer_cast<Object>(objview->getObject());
             if(object)
             {
@@ -1476,6 +1489,7 @@ namespace Kiwi
                     setBounds(pos.x() - 8., pos.x() - 8., 16., 16.);
                 }
             }
+             */
         }
     }
 }

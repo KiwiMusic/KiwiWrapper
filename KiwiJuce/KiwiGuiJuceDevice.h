@@ -29,22 +29,33 @@
 #include "KiwiGuiJucePatcher.h"
 
 namespace Kiwi
-{    
+{
+    
     class KiwiJuceGuiDeviceManager : public GuiDeviceManager
     {
     private:
+        const sDeviceCommandManager m_command_manager;
         
     public:
         
         //! Constructor
         /**
          */
-        KiwiJuceGuiDeviceManager();
+        KiwiJuceGuiDeviceManager() noexcept;
         
         //! Destructor
         /**
          */
-        ~KiwiJuceGuiDeviceManager();
+        ~KiwiJuceGuiDeviceManager() noexcept;
+        
+        //! Retrieve the command manager of the application.
+        /** The function retrieves the command manager of the application.
+         @return Thecommand manager.
+         */
+        inline sDeviceCommandManager getCommandManager() const noexcept
+        {
+            return m_command_manager;
+        }
         
         //! Create the view of a patcher depending on the implementation.
         /** The function retrieves the view of a patcher depending on the implementation.

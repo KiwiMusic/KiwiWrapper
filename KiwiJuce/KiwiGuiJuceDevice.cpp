@@ -27,12 +27,13 @@
 
 namespace Kiwi
 {
-    KiwiJuceGuiDeviceManager::KiwiJuceGuiDeviceManager()
+    KiwiJuceGuiDeviceManager::KiwiJuceGuiDeviceManager() noexcept :
+    m_command_manager(make_shared<ApplicationCommandManager>())
     {
         ;
     }
     
-    KiwiJuceGuiDeviceManager::~KiwiJuceGuiDeviceManager()
+    KiwiJuceGuiDeviceManager::~KiwiJuceGuiDeviceManager() noexcept
     {
         ;
     }

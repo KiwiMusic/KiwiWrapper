@@ -30,7 +30,9 @@
 #include <JuceHeader.h>
 
 namespace Kiwi
-{    
+{
+    typedef shared_ptr<ApplicationCommandManager> sDeviceCommandManager;
+    
     template<typename type> static inline juce::Point<type> toJuce(Kiwi::Point const& pt) noexcept
     {
         return juce::Point<type>((type)pt.x(), (type)pt.y());
