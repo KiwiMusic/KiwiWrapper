@@ -19,24 +19,20 @@
  To release a closed-source product which uses KIWI, contact : guillotpierre6@gmail.com
  
  ==============================================================================
-*/
+ */
 
 #ifdef __KIWI_JUCE_WRAPPER__
 
-#include "KiwiGuiJuce.h"
+#ifndef __DEF_KIWI_JUCE__
+#define __DEF_KIWI_JUCE__
 
-namespace Kiwi
-{
-    KiwiJuceGuiDeviceManager::KiwiJuceGuiDeviceManager()
-    {
-        ;
-    }
-    
-    KiwiJuceGuiDeviceManager::~KiwiJuceGuiDeviceManager()
-    {
-        ;
-    }    
-}
+#include "KiwiGuiJuceDoodle.h"
+#include "KiwiGuiJuceDevice.h"
+#include "KiwiGuiJuceEvent.h"
+#include "KiwiDspJuceDevice.h"
 
 #endif
+
+#endif
+
 

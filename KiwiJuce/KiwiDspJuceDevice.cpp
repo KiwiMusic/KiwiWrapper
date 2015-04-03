@@ -23,7 +23,7 @@
 
 #ifdef __KIWI_JUCE_WRAPPER__
 
-#include "KiwiDspJuce.h"
+#include "KiwiDspJuceDevice.h"
 
 namespace Kiwi
 {

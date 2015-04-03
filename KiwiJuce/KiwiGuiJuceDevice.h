@@ -23,14 +23,13 @@
 
 #ifdef __KIWI_JUCE_WRAPPER__
 
-#ifndef __DEF_KIWI_GUI_JUCE__
-#define __DEF_KIWI_GUI_JUCE__
+#ifndef __DEF_KIWI_GUI_JUCE_DEVICE__
+#define __DEF_KIWI_GUI_JUCE_DEVICE__
 
-#include "../KiwiGui/KiwiGui.h"
-#include <JuceHeader.h>
+#include "KiwiGuiJucePatcher.h"
 
 namespace Kiwi
-{
+{    
     class KiwiJuceGuiDeviceManager : public GuiDeviceManager
     {
     private:
@@ -46,6 +45,13 @@ namespace Kiwi
         /**
          */
         ~KiwiJuceGuiDeviceManager();
+        
+        //! Create the view of a patcher depending on the implementation.
+        /** The function retrieves the view of a patcher depending on the implementation.
+         @param patcher The patcher.
+         @return The patcher view.
+         */
+        GuiPatcher::sView createView(sGuiPatcher patcher) override;
     };
 }
 

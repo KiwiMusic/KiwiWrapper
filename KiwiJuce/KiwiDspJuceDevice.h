@@ -23,10 +23,10 @@
 
 #ifdef __KIWI_JUCE_WRAPPER__
 
-#ifndef __DEF_KIWI_DSP_JUCE__
-#define __DEF_KIWI_DSP_JUCE__
+#ifndef __DEF_KIWI_DSP_JUCE_DEVICE__
+#define __DEF_KIWI_DSP_JUCE_DEVICE__
 
-#include "../KiwiDsp/KiwiDsp.h"
+#include "../../KiwiDsp/KiwiDsp.h"
 #include <JuceHeader.h>
 
 namespace Kiwi

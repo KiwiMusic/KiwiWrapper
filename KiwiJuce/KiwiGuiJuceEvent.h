@@ -21,11 +21,41 @@
  ==============================================================================
  */
 
-#ifndef __DEF_KIWI_WRAPPER__
-#define __DEF_KIWI_WRAPPER__
+#ifdef __KIWI_JUCE_WRAPPER__
 
-#include "KiwiJuce/KiwiJuce.h"
-#include "KiwiDspPortAudio.h"
+#ifndef __DEF_KIWI_GUI_JUCE_EVENT__
+#define __DEF_KIWI_GUI_JUCE_EVENT__
+
+#include "KiwiGuiJuceDefine.h"
+
+namespace Kiwi
+{    
+    class jEventMouse : public Kiwi::Mouser::Event
+    {
+    private:
+        const MouseInputSource m_source;
+    public:
+        
+        jEventMouse(Type const& type, MouseEvent const& event) noexcept;
+        
+        jEventMouse(MouseEvent const& event, MouseWheelDetails const& wheel) noexcept;
+        
+        ~jEventMouse() noexcept;
+        
+        void setMouseUnlimited(bool isLimited, bool visibleUntilLimits = false) const override;
+    };
+    
+    class jEventKeyboard : public Kiwi::Keyboarder::Event
+    {
+    public:
+        
+        jEventKeyboard(KeyPress const& key) noexcept;
+        
+        ~jEventKeyboard() noexcept;
+    };
+}
+
+#endif
 
 #endif
 
