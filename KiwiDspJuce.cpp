@@ -407,6 +407,16 @@ namespace Kiwi
         }
 #endif
     }
+    
+    void KiwiJuceDspDeviceManager::stop()
+    {
+        m_device->start(this);
+    }
+    
+    void KiwiJuceDspDeviceManager::start()
+    {
+        m_device->stop();
+    }
 }
 
 #endif

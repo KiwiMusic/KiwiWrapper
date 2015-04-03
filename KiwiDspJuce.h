@@ -178,6 +178,16 @@ namespace Kiwi
          */
         sample* getOutputsSamples(const ulong channel) const noexcept override;
         
+        //! Start the device.
+        /** This function starts the device.
+         */
+        void start() override;
+        
+        //! Stop the device.
+        /** This function stops the device.
+         */
+        void stop() override;
+        
         void audioDeviceIOCallback(const float** inputChannelData, int numInputChannels, float** outputChannelData, int numOutputChannels, int numSamples) override;
         void audioDeviceAboutToStart(AudioIODevice* device) override;
         void audioDeviceStopped() override;
