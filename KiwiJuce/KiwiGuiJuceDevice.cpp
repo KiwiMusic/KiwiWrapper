@@ -38,9 +38,14 @@ namespace Kiwi
         ;
     }
     
-    GuiPatcher::sView KiwiJuceGuiDeviceManager::createView(sGuiPatcher patcher)
+    sGuiView KiwiJuceGuiDeviceManager::createView(sGuiController ctrl) const noexcept
     {
-        return make_shared<jPatcher>(patcher);
+        return make_shared<jView>(ctrl);
+    }
+    
+    sGuiWindow KiwiJuceGuiDeviceManager::createWindow() const noexcept
+    {
+        return make_shared<jWindow>(shared_from_this());
     }
 }
 

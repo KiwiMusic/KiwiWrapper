@@ -26,15 +26,15 @@
 #ifndef __DEF_KIWI_GUI_JUCE_DEVICE__
 #define __DEF_KIWI_GUI_JUCE_DEVICE__
 
-#include "KiwiGuiJucePatcher.h"
+#include "KiwiGuiJuceView.h"
 
 namespace Kiwi
 {
     
-    class KiwiJuceGuiDeviceManager : public GuiDeviceManager
+    class KiwiJuceGuiDeviceManager : public GuiDeviceManager, public enable_shared_from_this<KiwiJuceGuiDeviceManager>
     {
     private:
-        const sDeviceCommandManager m_command_manager;
+        const sJuceDeviceCommandManager m_command_manager;
         
     public:
         
@@ -52,17 +52,24 @@ namespace Kiwi
         /** The function retrieves the command manager of the application.
          @return Thecommand manager.
          */
-        inline sDeviceCommandManager getCommandManager() const noexcept
+        inline sJuceDeviceCommandManager getCommandManager() const noexcept
         {
             return m_command_manager;
         }
         
-        //! Create the view of a patcher depending on the implementation.
-        /** The function retrieves the view of a patcher depending on the implementation.
-         @param patcher The patcher.
-         @return The patcher view.
+        //! Create a view.
+        /** The function creates a view for a controller.
+         @param ctrl The controller linked with the view.
+         @return The view.
          */
-        GuiPatcher::sView createView(sGuiPatcher patcher) override;
+        sGuiView createView(sGuiController ctrl) const noexcept override;
+        
+        //! Create a window.
+        /** The function creates a window.
+         @return The window.
+         */
+        sGuiWindow createWindow() const noexcept override;        
+        
     };
 }
 

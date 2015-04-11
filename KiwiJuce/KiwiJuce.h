@@ -26,9 +26,7 @@
 #ifndef __DEF_KIWI_JUCE__
 #define __DEF_KIWI_JUCE__
 
-#include "KiwiGuiJuceDoodle.h"
 #include "KiwiGuiJuceDevice.h"
-#include "KiwiGuiJuceEvent.h"
 #include "KiwiDspJuceDevice.h"
 
 #endif
