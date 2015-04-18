@@ -31,44 +31,39 @@
 namespace Kiwi
 {
     
-    class KiwiJuceGuiDeviceManager : public GuiDeviceManager, public enable_shared_from_this<KiwiJuceGuiDeviceManager>
+    class KiwiJuceGuiDeviceManager : public GuiDeviceManager, public ApplicationCommandManager, public enable_shared_from_this<KiwiJuceGuiDeviceManager>
     {
-    private:
-        const sJuceDeviceCommandManager m_command_manager;
-        
     public:
         
         //! Constructor
         /**
          */
-        KiwiJuceGuiDeviceManager() noexcept;
+        KiwiJuceGuiDeviceManager();
         
         //! Destructor
         /**
          */
-        ~KiwiJuceGuiDeviceManager() noexcept;
-        
-        //! Retrieve the command manager of the application.
-        /** The function retrieves the command manager of the application.
-         @return Thecommand manager.
-         */
-        inline sJuceDeviceCommandManager getCommandManager() const noexcept
-        {
-            return m_command_manager;
-        }
+        ~KiwiJuceGuiDeviceManager();
         
         //! Create a view.
         /** The function creates a view for a controller.
          @param ctrl The controller linked with the view.
          @return The view.
          */
-        sGuiView createView(sGuiController ctrl) const noexcept override;
+        sGuiView createView(sGuiController ctrl) noexcept override;
         
-        //! Create a window.
-        /** The function creates a window.
-         @return The window.
+        //! Retrieves the mouse absolute position.
+        /** The function retrieves the mouse absolute position.
+         @return The mouse absolute position.
          */
-        sGuiWindow createWindow() const noexcept override;        
+        Point getMousePosition() const noexcept override;
+        
+        //! Retrieves the screen bounds.
+        /** The function retrieves the screen bounds for a point. Since there can be several screens, the point determines wichs screen to select.
+         @param pt The point.
+         @return The screen bounds.
+         */
+        Rectangle getScreenBounds(Point const& pt) const noexcept override;
         
     };
 }

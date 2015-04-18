@@ -34,13 +34,20 @@ namespace Kiwi
     //                                      JVIEW                                       //
     // ================================================================================ //
     
-	class jView : public GuiView, public Component
+	class jView : public GuiView, public Component, public ApplicationCommandTarget
     {
+    private:
+        const wJuceGuiDeviceManager m_device;
     public:
-        jView(sGuiController ctrl) noexcept;
+        jView(sJuceGuiDeviceManager device, sGuiController ctrl) noexcept;
         ~jView();
         
         void redraw() override;
+        void move() override;
+        void resize() override;
+        void addToDesktop() override;
+        void removeFromDesktop() override;
+        void setMinimize(const bool state) override;
         void addChild(sGuiView child) override;
         void removeChild(sGuiView child) override;
         
@@ -56,37 +63,14 @@ namespace Kiwi
         void focusGained(FocusChangeType cause) override;
         void focusLost(FocusChangeType cause) override;
         bool keyPressed(const KeyPress& key) override;
-    };
-    
-    typedef shared_ptr<jView> sjView;
-    
-    // ================================================================================ //
-    //                                      JWINDOW                                     //
-    // ================================================================================ //
-    
-    class jWindow : public GuiWindow, public DocumentWindow, public ApplicationCommandTarget
-    {
-    private:
-        class View : public Component
-        {
-        };
         
-        const scJuceGuiDeviceManager    m_device;
-        const ScopedPointer<View>       m_view;
-    public:
-        jWindow(scJuceGuiDeviceManager device);
-        ~jWindow();
-        void closeButtonPressed() override;
         ApplicationCommandTarget* getNextCommandTarget() override;
         void getAllCommands(Array <CommandID>& commands) override;
         void getCommandInfo(const CommandID commandID, ApplicationCommandInfo& result) override;
         bool perform(const InvocationInfo& info) override;
-        
-        void display(sGuiView view) override;
-        void setTitle(string const& title) override;
     };
     
-    typedef shared_ptr<jWindow> sjWindow;
+    typedef shared_ptr<jView> sjView;
 }
 
 #endif

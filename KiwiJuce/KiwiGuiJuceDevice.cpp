@@ -27,25 +27,29 @@
 
 namespace Kiwi
 {
-    KiwiJuceGuiDeviceManager::KiwiJuceGuiDeviceManager() noexcept :
-    m_command_manager(make_shared<ApplicationCommandManager>())
+    KiwiJuceGuiDeviceManager::KiwiJuceGuiDeviceManager()
     {
         ;
     }
     
-    KiwiJuceGuiDeviceManager::~KiwiJuceGuiDeviceManager() noexcept
+    KiwiJuceGuiDeviceManager::~KiwiJuceGuiDeviceManager()
     {
         ;
     }
     
-    sGuiView KiwiJuceGuiDeviceManager::createView(sGuiController ctrl) const noexcept
+    sGuiView KiwiJuceGuiDeviceManager::createView(sGuiController ctrl) noexcept
     {
-        return make_shared<jView>(ctrl);
+        return make_shared<jView>(shared_from_this(), ctrl);
     }
     
-    sGuiWindow KiwiJuceGuiDeviceManager::createWindow() const noexcept
+    Point KiwiJuceGuiDeviceManager::getMousePosition() const noexcept
     {
-        return make_shared<jWindow>(shared_from_this());
+        return toKiwi(Desktop::getMousePosition());
+    }
+    
+    Rectangle KiwiJuceGuiDeviceManager::getScreenBounds(Point const& pt) const noexcept
+    {
+        return toKiwi(Desktop::getInstance().getDisplays().getDisplayContaining(toJuce<int>(pt)).userArea);
     }
 }
 

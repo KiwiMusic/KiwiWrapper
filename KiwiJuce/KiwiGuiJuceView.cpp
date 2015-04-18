@@ -32,10 +32,18 @@ namespace Kiwi
 	//										JVIEW										//
 	// ================================================================================ //
 
-    jView::jView(sGuiController ctrl) noexcept : GuiView(ctrl)
+    jView::jView(sJuceGuiDeviceManager device, sGuiController ctrl) noexcept : GuiView(ctrl),
+    m_device(device)
     {
         setInterceptsMouseClicks(ctrl->wantMouse(), true);
+        setWantsKeyboardFocus(ctrl->wantKeyboard());
         setBounds(toJuce<int>(ctrl->getBounds()));
+        sJuceGuiDeviceManager mng = m_device.lock();
+        if(mng && ctrl->wantActions())
+        {
+            mng->registerAllCommandsForTarget(this);
+            this->addKeyListener(mng->getKeyMappings());
+        }
     }
     
     jView::~jView()
@@ -49,6 +57,24 @@ namespace Kiwi
         if(thread.lockWasGained())
         {
             repaint();
+        }
+    }
+    
+    void jView::move()
+    {
+        sGuiController ctrl = getController();
+        if(ctrl)
+        {
+            setBounds(toJuce<int>(ctrl->getBounds()));
+        }
+    }
+    
+    void jView::resize()
+    {
+        sGuiController ctrl = getController();
+        if(ctrl)
+        {
+            setBounds(toJuce<int>(ctrl->getBounds()));
         }
     }
     
@@ -73,6 +99,39 @@ namespace Kiwi
             if(jchild)
             {
                 removeChildComponent(jchild.get());
+            }
+        }
+    }
+    
+    void jView::addToDesktop()
+    {
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            Component::setVisible(true);
+            Component::addToDesktop(ComponentPeer::windowHasDropShadow);
+            Component::toFront(true);
+        }
+    }
+    
+    void jView::removeFromDesktop()
+    {
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            Component::setVisible(false);
+            Component::removeFromDesktop();
+        }
+    }
+    
+    void jView::setMinimize(const bool state)
+    {
+        ComponentPeer* const peer = getPeer();
+        if(peer)
+        {
+            if(peer->isMinimised() != state)
+            {
+                peer->setMinimised(state);
             }
         }
     }
@@ -142,120 +201,31 @@ namespace Kiwi
         return receive(jEventKeyboard(key));
     }
     
-    // ================================================================================ //
-    //                                      JWINDOW                                     //
-    // ================================================================================ //
-    
-    jWindow::jWindow(scJuceGuiDeviceManager device) :
-    GuiWindow(),
-    DocumentWindow("untitled", Colour(0xffdddddd), DocumentWindow::allButtons, true),
-    m_device(device),
-    m_view(new View())
-    {
-#if ! JUCE_MAC
-        setMenuBar(Application::getApp().m_menu_model);
-#endif
-        setUsingNativeTitleBar(true);
-        if(m_device)
-        {
-            sJuceDeviceCommandManager cmd = m_device->getCommandManager();
-            if(cmd)
-            {
-                ;
-            }
-        }
-
-        setBackgroundColour(Colours::lightgrey);
-        setResizable(true, true);
-        setSize(800, 600);
-        setResizeLimits (20, 20, 320000, 320000);
-        setVisible(true);
-        setContentNonOwned(m_view, false);
-        m_view->setInterceptsMouseClicks(false, true);
-        m_view->setBounds(0, 0, 800, 600);
-        
-        //Application::bindToCommandManager(this);
-        //Application::bindToKeyMapping(this);
-    }
-    
-    jWindow::~jWindow()
-    {
-        if(m_device)
-        {
-            sJuceDeviceCommandManager cmd = m_device->getCommandManager();
-            if(cmd)
-            {
-                removeKeyListener(cmd->getKeyMappings());
-            }
-        }
-    }
-    
-    void jWindow::closeButtonPressed()
-    {
-        //Application::getController()->closeMainWindow(this);
-    }
-    
-    ApplicationCommandTarget* jWindow::getNextCommandTarget()
+    ApplicationCommandTarget* jView::getNextCommandTarget()
     {
         return findFirstTargetParentComponent();
     }
     
-    void jWindow::getAllCommands(Array <CommandID>& commands)
+    void jView::getAllCommands(Array <CommandID>& commands)
     {
-        commands.add(CommandIDs::closeWindow);
-        commands.add(CommandIDs::minimizeWindow);
-        commands.add(CommandIDs::maximizeWindow);
-    }
-    
-    void jWindow::getCommandInfo(const CommandID commandID, ApplicationCommandInfo& result)
-    {
-        switch (commandID)
+        vector<ulong> codes = getActionCodes();
+        for(vector<ulong>::size_type i = 0; i < codes.size(); i++)
         {
-            case CommandIDs::closeWindow:
-                result.setInfo (TRANS("Close"), TRANS("Close Window"), CommandCategories::windows, 0);
-                result.addDefaultKeypress ('w', ModifierKeys::commandModifier);
-                result.setActive(getDesktopWindowStyleFlags() & DocumentWindow::closeButton);
-                break;
-                
-            case CommandIDs::minimizeWindow:
-                result.setInfo (TRANS("Minimize"), TRANS("Minimize Window"), CommandCategories::windows, 0);
-                result.setActive(getDesktopWindowStyleFlags() & DocumentWindow::minimiseButton);
-                break;
-                
-            case CommandIDs::maximizeWindow:
-                result.setInfo (TRANS("Maximize"), TRANS("Maximize Window"), CommandCategories::windows, 0);
-                result.setActive(getDesktopWindowStyleFlags() & DocumentWindow::maximiseButton);
-                break;
-                
-            default:
-                break;
+            commands.add(CommandID(codes[i]));
         }
     }
     
-    bool jWindow::perform (const InvocationInfo& info)
+    void jView::getCommandInfo(const CommandID commandID, ApplicationCommandInfo& result)
     {
-        switch (info.commandID)
-        {
-            case CommandIDs::minimizeWindow: minimiseButtonPressed(); break;
-            case CommandIDs::maximizeWindow: maximiseButtonPressed(); break;
-            case CommandIDs::closeWindow:    closeButtonPressed();    break;
-            default: return false;
-        }
-        return true;
+        Action action = getAction(ulong(commandID));
+        result.setInfo(translate(action.name), translate(action.description), action.category, 0);
+        result.addDefaultKeypress(action.event.getCharacter(), action.event.getModifiers());
+        //result.setActive(getDesktopWindowStyleFlags() & DocumentWindow::closeButton);
     }
     
-    void jWindow::display(sGuiView view)
+    bool jView::perform(const InvocationInfo& info)
     {
-        sjView jview = dynamic_pointer_cast<jView>(view);
-        if(jview)
-        {
-            m_view->addAndMakeVisible(jview.get());
-        }
-    }
-    
-    void jWindow::setTitle(string const& title)
-    {
-        setName(title);
+        return performAction(ulong(info.commandID));
     }
 }
 
