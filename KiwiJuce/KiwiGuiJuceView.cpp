@@ -141,7 +141,7 @@ namespace Kiwi
         sGuiController ctrl = getController();
         if(ctrl)
         {
-            jSketch d(g, g.getClipBounds());
+            jSketch d(g);
             ctrl->draw(d);
         }
     }
@@ -198,7 +198,7 @@ namespace Kiwi
     
     bool jView::keyPressed(const KeyPress& key)
     {
-        return receive(jEventKeyboard(key));
+        return receive(KeyboardEvent(key.getKeyCode(), (long)key.getModifiers().getRawFlags(), key.getTextCharacter()));
     }
     
     ApplicationCommandTarget* jView::getNextCommandTarget()

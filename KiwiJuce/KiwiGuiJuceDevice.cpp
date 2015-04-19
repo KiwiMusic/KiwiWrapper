@@ -51,6 +51,12 @@ namespace Kiwi
     {
         return toKiwi(Desktop::getInstance().getDisplays().getDisplayContaining(toJuce<int>(pt)).userArea);
     }
+    
+    Size KiwiJuceGuiDeviceManager::getTextSize(Font const& font, wstring const& text) const noexcept
+    {
+        juce::Font jfont(font.getName(), (float)font.getSize(), font.getStyle());
+        return Size(jfont.getStringWidth(String(text.c_str())), jfont.getHeight());
+    }
 }
 
 #endif

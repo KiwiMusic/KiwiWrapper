@@ -27,23 +27,6 @@
 
 namespace Kiwi
 {
-    jSketch::jSketch(Graphics &_g, juce::Rectangle<int> b) noexcept :
-    g(_g), bounds(b.getX(), b.getY(), b.getWidth(), b.getHeight())
-    {
-        ;
-    }
-    
-    jSketch::jSketch(Graphics &_g, Kiwi::Rectangle b) noexcept :
-    g(_g), bounds(b)
-    {
-        ;
-    }
-    
-    jSketch::~jSketch() noexcept
-    {
-        ;
-    }
-    
     void jSketch::setColor(Kiwi::Color const& color)
     {
         g.setColour(toJuce(color));
@@ -55,37 +38,17 @@ namespace Kiwi
         g.setFont(jfont);
     }
     
-    void jSketch::fillAll()
+    void jSketch::fillAll() const
     {
         g.fillAll();
     }
     
-    void jSketch::drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool wrap)
+    void jSketch::drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool wrap) const
     {
-        g.drawText(text, x, y, w, h, juce::Justification(j), wrap);
+        g.drawText(String(text), x, y, w, h, juce::Justification(j), wrap);
     }
     
-    void jSketch::drawText(string const& text, Kiwi::Rectangle const& rect, Kiwi::Font::Justification j, bool wrap )
-    {
-        g.drawText(text, rect.x(), rect.y(), rect.width(), rect.height(), juce::Justification(j), wrap);
-    }
-    
-    void jSketch::drawFittedText(string const& text, Kiwi::Rectangle const& rect, Kiwi::Font::Justification j, const long maximumNumberOfLines, const double minimumHorizontalScale)
-    {
-        g.drawFittedText(text, rect.x(), rect.y(), rect.width(), rect.height(), juce::Justification(j), maximumNumberOfLines, minimumHorizontalScale);
-    }
-    
-    void jSketch::drawFittedText(string const& text, const double x, const double y, const double width, const double height, Kiwi::Font::Justification j, const long maximumNumberOfLines, const double minimumHorizontalScale)
-    {
-        g.drawFittedText(text, x, y, width, height, juce::Justification(j), maximumNumberOfLines, minimumHorizontalScale);
-    }
-    
-    void jSketch::drawMultiLineText(wstring const& text, const long startX, const long baselineY, const long maximumLineWidth) const
-    {
-        g.drawMultiLineText(text.c_str(), startX, baselineY, maximumLineWidth);
-    }
-    
-    void jSketch::fillPath(Kiwi::Path const& path)
+    void jSketch::fillPath(Kiwi::Path const& path) const
     {
         if(!path.empty())
         {
@@ -135,7 +98,7 @@ namespace Kiwi
         }
     }
     
-    void jSketch::drawPath(const Kiwi::Path& path, double const thickness)
+    void jSketch::drawPath(const Kiwi::Path& path, double const thickness) const
     {
         if(!path.empty())
         {
@@ -185,37 +148,27 @@ namespace Kiwi
         }
     }
     
-    void jSketch::drawLine(double x1, double y1, double x2, double y2, double thickness)
+    void jSketch::drawLine(double x1, double y1, double x2, double y2, double thickness) const
     {
         g.drawLine(x1, y1, x2, y2, thickness);
     }
     
-    void jSketch::drawRectangle(double x, double y, double w, double h, double thickness, double rounded)
+    void jSketch::drawRectangle(double x, double y, double w, double h, double thickness, double rounded) const
     {
         g.drawRoundedRectangle(x, y, w, h, rounded, thickness);
     }
-    
-    void jSketch::drawRectangle(Kiwi::Rectangle const& rect, double thickness, double rounded)
-    {
-        g.drawRoundedRectangle(rect.x(), rect.y(), rect.width(), rect.height(), rounded, thickness);
-    }
-    
-    void jSketch::fillRectangle(double x, double y, double w, double h, double rounded)
+
+    void jSketch::fillRectangle(double x, double y, double w, double h, double rounded) const
     {
         g.fillRoundedRectangle(x, y, w, h, rounded);
     }
     
-    void jSketch::fillRectangle(Kiwi::Rectangle const& rect, double rounded)
-    {
-        g.fillRoundedRectangle(rect.x(), rect.y(), rect.width(), rect.height(), rounded);
-    }
-    
-    void jSketch::drawEllipse(double x, double y, double width, double height, double thickness)
+    void jSketch::drawEllipse(double x, double y, double width, double height, double thickness) const
     {
         g.drawEllipse(x, y, width, height, thickness);
     }
     
-    void jSketch::fillEllipse(double x, double y, double width, double height)
+    void jSketch::fillEllipse(double x, double y, double width, double height) const
     {
         g.fillEllipse(x, y, width, height);
     }
@@ -242,17 +195,6 @@ namespace Kiwi
     void jEventMouse::setMouseUnlimited(bool isLimited, bool visibleUntilLimits) const
     {
         m_source.enableUnboundedMouseMovement(isLimited, visibleUntilLimits);
-    }
-    
-    jEventKeyboard::jEventKeyboard(KeyPress const& key) noexcept :
-    Kiwi::KeyboardEvent(key.getTextCharacter(), (long)key.getModifiers().getRawFlags())
-    {
-        ;
-    }
-    
-    jEventKeyboard::~jEventKeyboard() noexcept
-    {
-        ;
     }
 }
 

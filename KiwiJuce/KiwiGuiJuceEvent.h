@@ -31,33 +31,27 @@
 namespace Kiwi
 {
     
-    template<typename type> static inline juce::Point<type> toJuce(Kiwi::Point const& pt) noexcept
-    {
+    template<typename type> static inline juce::Point<type> toJuce(Kiwi::Point const& pt) noexcept {
         return juce::Point<type>((type)pt.x(), (type)pt.y());
     }
     
-    template<typename type> static inline Kiwi::Point toKiwi(juce::Point<type> const& rect) noexcept
-    {
+    template<typename type> static inline Kiwi::Point toKiwi(juce::Point<type> const& rect) noexcept {
         return Kiwi::Point(rect.getX(), rect.getY());
     }
     
-    template<typename type> static inline juce::Rectangle<type> toJuce(Kiwi::Rectangle const& rect) noexcept
-    {
+    template<typename type> static inline juce::Rectangle<type> toJuce(Kiwi::Rectangle const& rect) noexcept {
         return juce::Rectangle<type>((type)rect.x(), (type)rect.y(), (type)rect.width(), (type)rect.height());
     }
     
-    template<typename type> static inline Kiwi::Rectangle toKiwi(juce::Rectangle<type> const& rect) noexcept
-    {
+    template<typename type> static inline Kiwi::Rectangle toKiwi(juce::Rectangle<type> const& rect) noexcept {
         return Kiwi::Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
     
-    static inline juce::Colour toJuce(Kiwi::Color const& color) noexcept
-    {
+    static inline juce::Colour toJuce(Kiwi::Color const& color) noexcept {
         return Colour::fromFloatRGBA(color.red(), color.green(), color.blue(), color.alpha());
     }
     
-    static inline Kiwi::Color toKiwi(juce::Colour const& color) noexcept
-    {
+    static inline Kiwi::Color toKiwi(juce::Colour const& color) noexcept {
         return Kiwi::Color(color.getFloatRed(), color.getFloatGreen(), color.getFloatBlue(), color.getFloatAlpha());
     }
     
@@ -68,168 +62,38 @@ namespace Kiwi
         Kiwi::Rectangle bounds;
     public:
         
-        //! Constructor.
-        /** The function initialize the juce graphics and the bounds.
-         */
-        jSketch(Graphics& _g, juce::Rectangle<int> b) noexcept;
+        inline jSketch(Graphics& graphics) noexcept :
+        g(graphics), bounds(toKiwi(graphics.getClipBounds())){}
         
-        //! Constructor.
-        /** The function initialize the juce graphics and the bounds.
-         */
-        jSketch(Graphics& _g, Kiwi::Rectangle b) noexcept;
+        inline ~jSketch() noexcept {}
         
-        //! Destructor.
-        /** The function does nothing.
-         */
-        ~jSketch() noexcept;
+        inline Kiwi::Point getPosition() const noexcept override {return bounds.position();}
         
-        //! Set the color.
-        /** The sets the color that now will be used by the sketch.
-         @param colot The color.
-         */
+        inline Kiwi::Point getSize() const noexcept override {return bounds.size();}
+        
+        inline Kiwi::Rectangle getBounds() const noexcept override {return bounds;}
+        
         void setColor(Kiwi::Color const& color) override;
         
-        //! Set the font.
-        /** The sets the font that now will be used by the sketch.
-         @param font The font.
-         */
         void setFont(Kiwi::Font const& font) override;
         
-        //! Fill the sketch with a color.
-        /** The function fills the entire sketch with a color.
-         */
-        void fillAll() override;
+        void fillAll() const override;
         
-        //! Draw a line of text within a rectangle.
-        /** The function draws a line of text within a rectangle.
-         @param text The text.
-         @param x The abscissa of the rectangle.
-         @param y The ordinate of the rectangle.
-         @param w The width of the rectangle.
-         @param h The height of the rectangle.
-         @param j The justification.
-         @param truncated If the text should be truncated if it goes out the boundaries.
-         */
-        void drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool truncated = false) override;
+        void drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool truncated = false) const override;
+
+        void fillPath(Kiwi::Path const& path) const override;
         
-        //! Draw a line of text within a rectangle.
-        /** The function draws a line of text within a rectangle.
-         @param text The text.
-         @param rect The rectangle.
-         @param j The justification.
-         @param truncated If the text should be truncated if it goes out the boundaries.
-         */
-        void drawText(string const& text, Kiwi::Rectangle const& rect, Kiwi::Font::Justification j, bool wrap = false) override;
+        void drawPath(const Kiwi::Path& path, double const thickness) const override;
         
-        //! Tries to draw a text string inside a given rectangle.
-        /** The function tries to draw a text string inside a given space.
-         @see drawFittedText
-         */
-        void drawFittedText(string const& text, const double x, const double y, const double width, const double height, Kiwi::Font::Justification j, const long maximumNumberOfLines, const double minimumHorizontalScale) override;
+        void drawLine(double x1, double y1, double x2, double y2, double thickness) const override;
         
-        //! Tries to draw a text string inside a given rectangle.
-        /** The function tries to draw a text string inside a given space.
-         @see drawFittedText
-         */
-        void drawFittedText(string const& text, Kiwi::Rectangle const& rect, Kiwi::Font::Justification j, const long maximumNumberOfLines, const double minimumHorizontalScale) override;
+        void drawRectangle(double x, double y, double w, double h, double thickness, double rounded = 0.) const override;
         
-        //! Draws text across multiple lines.
-        /** Draws text across multiple lines. This will break the text onto a new line
-         where there's a new-line or carriage-return character, or at a word-boundary when the text becomes wider
-         than the size specified by the maximumLineWidth parameter.
-         @see setFont, drawFittedText
-         */
-        void drawMultiLineText(wstring const& text, const long startX, const long baselineY, const long maximumLineWidth) const override;
+        void fillRectangle(double x, double y, double w, double h, double rounded = 0.) const override;
         
-        //! Fill a path.
-        /** The function fills a patcher.
-         @param path The path.
-         */
-        void fillPath(Kiwi::Path const& path) override;
+        void drawEllipse(double x, double y, double width, double height, double thickness = 0.) const override;
         
-        //! Draw a path.
-        /** The function draws a patcher.
-         @param path The path.
-         @param thickness The thickness of the parth.
-         */
-        void drawPath(const Kiwi::Path& path, double const thickness) override;
-        
-        void drawLine(double x1, double y1, double x2, double y2, double thickness) override;
-        
-        void drawRectangle(double x, double y, double w, double h, double thickness, double rounded = 0.);
-        
-        void drawRectangle(Kiwi::Rectangle const& rect, double thickness, double rounded = 0.) override;
-        
-        void fillRectangle(double x, double y, double w, double h, double rounded = 0.) override;
-        
-        void fillRectangle(Kiwi::Rectangle const& rect, double rounded = 0.) override;
-        
-        void drawEllipse(double x, double y, double width, double height, double thickness = 0.) override;
-        
-        void fillEllipse(double x, double y, double width, double height) override;
-        
-        //! Retrieve the abscissa.
-        /** The function retrieves the abscissa.
-         @return The abscissa.
-         */
-        inline double getX() const noexcept override
-        {
-            return bounds.x();
-        }
-        
-        //! Retrieve the ordinate.
-        /** The function retrieves the ordinate.
-         @return The ordinate.
-         */
-        inline double getY() const noexcept override
-        {
-            return bounds.y();
-        }
-        
-        //! Retrieve the width.
-        /** The function retrieves the width.
-         @return The width.
-         */
-        inline double getWidth() const noexcept override
-        {
-            return bounds.width();
-        }
-        
-        //! Retrieve the height.
-        /** The function retrieves the height.
-         @return The height.
-         */
-        inline double getHeight() const noexcept override
-        {
-            return bounds.height();
-        }
-        
-        //! Retrieve the position.
-        /** The function retrieves the position.
-         @return The position.
-         */
-        inline Kiwi::Point getPosition() const noexcept override
-        {
-            return bounds.position();
-        }
-        
-        //! Retrieve the size.
-        /** The function retrieves the size.
-         @return The size.
-         */
-        inline Kiwi::Point getSize() const noexcept override
-        {
-            return bounds.size();
-        }
-        
-        //! Retrieve the bounds.
-        /** The function retrieves the bounds.
-         @return The bounds.
-         */
-        inline Kiwi::Rectangle getBounds() const noexcept override
-        {
-            return bounds;
-        }
+        void fillEllipse(double x, double y, double width, double height) const override;
     };
     
     class jEventMouse : public Kiwi::MouseEvent
@@ -245,15 +109,6 @@ namespace Kiwi
         ~jEventMouse() noexcept;
         
         void setMouseUnlimited(bool isLimited, bool visibleUntilLimits = false) const override;
-    };
-    
-    class jEventKeyboard : public Kiwi::KeyboardEvent
-    {
-    public:
-        
-        jEventKeyboard(KeyPress const& key) noexcept;
-        
-        ~jEventKeyboard() noexcept;
     };
 }
 
