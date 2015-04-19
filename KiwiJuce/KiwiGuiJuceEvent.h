@@ -69,7 +69,7 @@ namespace Kiwi
         
         inline Kiwi::Point getPosition() const noexcept override {return bounds.position();}
         
-        inline Kiwi::Point getSize() const noexcept override {return bounds.size();}
+        inline Kiwi::Size getSize() const noexcept override {return bounds.size();}
         
         inline Kiwi::Rectangle getBounds() const noexcept override {return bounds;}
         
