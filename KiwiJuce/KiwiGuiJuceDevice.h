@@ -73,6 +73,12 @@ namespace Kiwi
          */
         Size getTextSize(Font const& font, wstring const& text) const noexcept override;
         
+        //! Retrieves all the fonts from the system.
+        /** The function retrieves all the fonts from the system.
+         @return A vector of fonts.
+         */
+        vector<Font> getSystemFonts() const noexcept override;
+        
     };
 }
 

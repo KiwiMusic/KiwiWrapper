@@ -52,10 +52,45 @@ namespace Kiwi
         return toKiwi(Desktop::getInstance().getDisplays().getDisplayContaining(toJuce<int>(pt)).userArea);
     }
     
+    vector<Font> KiwiJuceGuiDeviceManager::getSystemFonts() const noexcept
+    {
+        vector<Font>        fonts;
+        Array<juce::Font>   results;
+        juce::Font::findFonts(results);
+        for(int i = 0; i < results.size(); i++)
+        {
+            fonts.push_back(Font(results.getUnchecked(i).getTypefaceName().toStdString()));
+        }
+        return fonts;
+    }
+    
     Size KiwiJuceGuiDeviceManager::getTextSize(Font const& font, wstring const& text) const noexcept
     {
-        juce::Font jfont(font.getName(), (float)font.getSize(), font.getStyle());
-        return Size(jfont.getStringWidth(String(text.c_str())), jfont.getHeight());
+        juce::Font jfont(font.getName(), float(font.getSize()), font.getStyle());
+        Size size(0., 0.);
+        wstring::size_type last = 0;
+        wstring::size_type pos = text.find(L"\n");
+        while(pos != wstring::npos)
+        {
+            const String jstring(text.c_str()+last, pos - last);
+            cout << jstring.toStdString() << endl;
+            const double width = jfont.getStringWidth(String(text.c_str()+last, pos - last));
+            if(width > size.width())
+            {
+                size.width(width);
+            }
+            last = pos+1;
+            pos = text.find(L"\n", last);
+            size.height(size.height() + double(jfont.getHeight()));
+        }
+        const double width = jfont.getStringWidth(String(text.c_str()+last, text.size() - last));
+        if(width > size.width())
+        {
+            size.width(width);
+        }
+        size.height(size.height() + double(jfont.getHeight()));
+        
+        return size;
     }
 }
 
