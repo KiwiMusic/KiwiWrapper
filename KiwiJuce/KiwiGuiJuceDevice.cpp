@@ -73,7 +73,6 @@ namespace Kiwi
         while(pos != wstring::npos)
         {
             const String jstring(text.c_str()+last, pos - last);
-            cout << jstring.toStdString() << endl;
             const double width = jfont.getStringWidth(String(text.c_str()+last, pos - last));
             if(width > size.width())
             {

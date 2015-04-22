@@ -52,8 +52,9 @@ namespace Kiwi
     {
         if(!path.empty())
         {
+            juce::Path jpath;
             /*
-             juce::Path jpath;
+             
              Kiwi::Path::Node node = path.getNode(0);
              jpath.startNewSubPath(node.point.x(), node.point.y());
              for(ulong i = 1; i < path.size(); i++)
@@ -93,8 +94,9 @@ namespace Kiwi
              break;
              }
              }
-             g.fillPath(jpath);
+             
              */
+            g.fillPath(jpath);
         }
     }
     
