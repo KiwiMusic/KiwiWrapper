@@ -45,7 +45,7 @@ namespace Kiwi
     
     void jSketch::drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool wrap) const
     {
-        g.drawText(String(text), x, y, w, h, juce::Justification(j), wrap);
+        g.drawText(String(text), juce::Rectangle<float>(x, y, w, h), juce::Justification(j), wrap);
     }
     
     void jSketch::fillPath(Kiwi::Path const& path) const
