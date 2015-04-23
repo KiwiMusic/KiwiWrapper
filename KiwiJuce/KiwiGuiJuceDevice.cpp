@@ -64,32 +64,10 @@ namespace Kiwi
         return fonts;
     }
     
-    Size KiwiJuceGuiDeviceManager::getTextSize(Font const& font, wstring const& text) const noexcept
+    double KiwiJuceGuiDeviceManager::getTextWidth(Font const& font, wstring const& text) const noexcept
     {
         juce::Font jfont(font.getName(), float(font.getSize()), font.getStyle());
-        Size size(0., 0.);
-        wstring::size_type last = 0;
-        wstring::size_type pos = text.find(L"\n");
-        while(pos != wstring::npos)
-        {
-            const String jstring(text.c_str()+last, pos - last);
-            const double width = jfont.getStringWidth(String(text.c_str()+last, pos - last));
-            if(width > size.width())
-            {
-                size.width(width);
-            }
-            last = pos+1;
-            pos = text.find(L"\n", last);
-            size.height(size.height() + double(jfont.getHeight()));
-        }
-        const double width = jfont.getStringWidth(String(text.c_str()+last, text.size() - last));
-        if(width > size.width())
-        {
-            size.width(width);
-        }
-        size.height(size.height() + double(jfont.getHeight()));
-        
-        return size;
+        return jfont.getStringWidth(String(text.c_str()));
     }
 }
 

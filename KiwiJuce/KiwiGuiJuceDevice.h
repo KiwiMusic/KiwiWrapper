@@ -65,13 +65,13 @@ namespace Kiwi
          */
         Rectangle getScreenBounds(Point const& pt) const noexcept override;
         
-        //! Retrieves the size of a text.
-        /** The function the size of a text depending on a font.
+        //! Retrieves the width of a text.
+        /** The function the width of a text depending on a font.
          @param font The font.
          @param text The text.
-         @return The size of the text.
+         @return The width of the text.
          */
-        Size getTextSize(Font const& font, wstring const& text) const noexcept override;
+        double getTextWidth(Font const& font, wstring const& text) const noexcept override;
         
         //! Retrieves all the fonts from the system.
         /** The function retrieves all the fonts from the system.
