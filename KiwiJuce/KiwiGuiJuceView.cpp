@@ -37,7 +37,7 @@ namespace Kiwi
     {
         setInterceptsMouseClicks(ctrl->wantMouse(), true);
         setWantsKeyboardFocus(ctrl->wantKeyboard());
-        setBounds(toJuce<int>(ctrl->getBounds()));
+        setBounds(toJuce<int>(GuiView::getBounds()));
         sJuceGuiDeviceManager mng = m_device.lock();
         if(mng && ctrl->wantActions())
         {
@@ -62,19 +62,34 @@ namespace Kiwi
     
     void jView::move()
     {
-        sGuiController ctrl = getController();
-        if(ctrl)
+        const auto bounds = GuiView::getBounds();
         {
-            setBounds(toJuce<int>(ctrl->getBounds()));
+            const MessageManagerLock thread(Thread::getCurrentThread());
+            if(thread.lockWasGained())
+            {
+                Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
+            }
         }
     }
     
     void jView::resize()
     {
-        sGuiController ctrl = getController();
-        if(ctrl)
+        const auto bounds = GuiView::getBounds();
         {
-            setBounds(toJuce<int>(ctrl->getBounds()));
+            const MessageManagerLock thread(Thread::getCurrentThread());
+            if(thread.lockWasGained())
+            {
+                Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
+            }
+        }
+    }
+    
+    void jView::grabFocus()
+    {
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            grabKeyboardFocus();
         }
     }
     
@@ -87,6 +102,11 @@ namespace Kiwi
             {
                 addAndMakeVisible(jchild.get());
                 jchild->setBounds(toJuce<int>(jchild->getController()->getBounds()));
+                sGuiController ctrl = child->getController();
+                if(ctrl->wantKeyboard())
+                {
+                    jchild->grabKeyboardFocus();
+                }
             }
         }
     }
@@ -200,7 +220,24 @@ namespace Kiwi
     {
         return receive(KeyboardEvent(key.getKeyCode(), (long)key.getModifiers().getRawFlags(), key.getTextCharacter()));
     }
+    /*
+    bool jView::isTextInputActive() const
+    {
+        return getWantsKeyboardFocus();
+    }
     
+    Range<int> jView::getHighlightedRegion() const {return Range<int>();}
+    
+    void jView::setHighlightedRegion (const Range<int>& newRange) {}
+    
+    void jView::setTemporaryUnderlining (const Array <Range<int> >& underlinedRegions) {}
+    
+    String jView::getTextInRange (const Range<int>& range) const {return String();}
+    
+    void jView::insertTextAtCaret (const String& textToInsert) {}
+    
+    juce::Rectangle<int> jView::getCaretRectangle() {return juce::Rectangle<int>();};
+    */
     ApplicationCommandTarget* jView::getNextCommandTarget()
     {
         return findFirstTargetParentComponent();
