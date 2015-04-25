@@ -34,7 +34,7 @@ namespace Kiwi
     //                                      JVIEW                                       //
     // ================================================================================ //
     
-	class jView : public GuiView, public Component, public ApplicationCommandTarget
+	class jView : public GuiView, public Component, public ApplicationCommandTarget//, public TextInputTarget
     {
     private:
         const wJuceGuiDeviceManager m_device;
@@ -45,6 +45,7 @@ namespace Kiwi
         void redraw() override;
         void move() override;
         void resize() override;
+        void grabFocus() override;
         void addToDesktop() override;
         void removeFromDesktop() override;
         void setMinimize(const bool state) override;
@@ -64,6 +65,15 @@ namespace Kiwi
         void focusLost(FocusChangeType cause) override;
         bool keyPressed(const KeyPress& key) override;
         
+        /*
+        bool isTextInputActive() const override;
+        Range<int> getHighlightedRegion() const override;
+        void setHighlightedRegion (const Range<int>& newRange) override;
+        void setTemporaryUnderlining (const Array <Range<int> >& underlinedRegions) override;
+        String getTextInRange (const Range<int>& range) const override;
+        void insertTextAtCaret (const String& textToInsert) override;
+        juce::Rectangle<int> getCaretRectangle() override;
+        */
         ApplicationCommandTarget* getNextCommandTarget() override;
         void getAllCommands(Array <CommandID>& commands) override;
         void getCommandInfo(const CommandID commandID, ApplicationCommandInfo& result) override;
