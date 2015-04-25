@@ -104,49 +104,49 @@ namespace Kiwi
     {
         if(!path.empty())
         {
-            /*
-             juce::Path jpath;
-             Kiwi::Path::Node node = path.getNode(0);
-             jpath.startNewSubPath(node.point.x(), node.point.y());
-             for(ulong i = 1; i < path.size(); i++)
-             {
-             node = path.getNode(i);
-             switch(node.mode)
-             {
-             case Kiwi::Path::Move:
-             jpath.startNewSubPath(node.point.x(), node.point.y());
-             break;
-             case Kiwi::Path::Linear:
-             jpath.lineTo(node.point.x(), node.point.y());
-             break;
-             case Kiwi::Path::Quadratic:
-             {
-             if(++i < path.size())
-             {
-             Kiwi::Path::Node next_node = path.getNode(i);
-             jpath.quadraticTo(node.point.x(), node.point.y(), next_node.point.x(), next_node.point.y());
-             }
-             
-             }
-             break;
-             case Kiwi::Path::Cubic:
-             {
-             i += 2;
-             if(i < path.size())
-             {
-             Kiwi::Path::Node next_node = path.getNode(i-1);
-             Kiwi::Path::Node next_node2 = path.getNode(i);
-             jpath.cubicTo(node.point.x(), node.point.y(), next_node.point.x(), next_node.point.y(), next_node2.point.x(), next_node2.point.y());
-             }
-             }
-             break;
-             
-             default:
-             break;
-             }
-             }
-             g.strokePath(jpath, juce::PathStrokeType(thickness));
-             */
+            juce::Path jpath;
+            Kiwi::Path::Node node = path.getNode(0);
+            jpath.startNewSubPath(node.point().x(), node.point().y());
+            for(ulong i = 1; i < path.size(); i++)
+            {
+                node = path.getNode(i);
+                switch(node.mode())
+                {
+                    case Kiwi::Path::Move:
+                        jpath.startNewSubPath(node.point().x(), node.point().y());
+                        break;
+                    case Kiwi::Path::Linear:
+                        jpath.lineTo(node.point().x(), node.point().y());
+                        break;
+                    case Kiwi::Path::Quadratic:
+                    {
+                        if(++i < path.size())
+                        {
+                            Kiwi::Path::Node next_node = path.getNode(i);
+                            jpath.quadraticTo(node.point().x(), node.point().y(),
+                                              next_node.point().x(), next_node.point().y());
+                        }
+                        break;
+                    }
+                    case Kiwi::Path::Cubic:
+                    {
+                        i += 2;
+                        if(i < path.size())
+                        {
+                            Kiwi::Path::Node next_node = path.getNode(i-1);
+                            Kiwi::Path::Node next_node2 = path.getNode(i);
+                            jpath.cubicTo(node.point().x(), node.point().y(),
+                                          next_node.point().x(), next_node.point().y(),
+                                          next_node2.point().x(), next_node2.point().y());
+                        }
+                        break;
+                    }
+                        
+                    default:
+                        break;
+                }
+            }
+            g.strokePath(jpath, juce::PathStrokeType(thickness));
         }
     }
     
