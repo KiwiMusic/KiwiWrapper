@@ -39,6 +39,10 @@ namespace Kiwi
     
     sGuiView KiwiJuceGuiDeviceManager::createView(sGuiController ctrl) noexcept
     {
+        if(ctrl->wantKeyboard() && !ctrl->wantActions())
+        {
+            //return make_shared<jViewTextInput>(shared_from_this(), ctrl);
+        }
         return make_shared<jView>(shared_from_this(), ctrl);
     }
     

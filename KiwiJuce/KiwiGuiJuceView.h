@@ -34,7 +34,7 @@ namespace Kiwi
     //                                      JVIEW                                       //
     // ================================================================================ //
     
-	class jView : public GuiView, public Component, public ApplicationCommandTarget//, public TextInputTarget
+	class jView : public GuiView, public Component, public ApplicationCommandTarget
     {
     private:
         const wJuceGuiDeviceManager m_device;
@@ -65,15 +65,6 @@ namespace Kiwi
         void focusLost(FocusChangeType cause) override;
         bool keyPressed(const KeyPress& key) override;
         
-        /*
-        bool isTextInputActive() const override;
-        Range<int> getHighlightedRegion() const override;
-        void setHighlightedRegion (const Range<int>& newRange) override;
-        void setTemporaryUnderlining (const Array <Range<int> >& underlinedRegions) override;
-        String getTextInRange (const Range<int>& range) const override;
-        void insertTextAtCaret (const String& textToInsert) override;
-        juce::Rectangle<int> getCaretRectangle() override;
-        */
         ApplicationCommandTarget* getNextCommandTarget() override;
         void getAllCommands(Array <CommandID>& commands) override;
         void getCommandInfo(const CommandID commandID, ApplicationCommandInfo& result) override;
@@ -81,6 +72,21 @@ namespace Kiwi
     };
     
     typedef shared_ptr<jView> sjView;
+    
+    class jViewTextInput : public jView, public TextInputTarget
+    {
+    public:
+        jViewTextInput(sJuceGuiDeviceManager device, sGuiController ctrl) noexcept : jView(device, ctrl) {}
+        ~jViewTextInput() {}
+        
+        bool isTextInputActive() const override;
+        Range<int> getHighlightedRegion() const override;
+        void setHighlightedRegion (const Range<int>& newRange) override;
+        void setTemporaryUnderlining (const Array <Range<int> >& underlinedRegions) override;
+        String getTextInRange (const Range<int>& range) const override;
+        void insertTextAtCaret (const String& textToInsert) override;
+        juce::Rectangle<int> getCaretRectangle() override;
+    };
 }
 
 #endif

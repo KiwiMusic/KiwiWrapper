@@ -220,24 +220,7 @@ namespace Kiwi
     {
         return receive(KeyboardEvent(key.getKeyCode(), (long)key.getModifiers().getRawFlags(), key.getTextCharacter()));
     }
-    /*
-    bool jView::isTextInputActive() const
-    {
-        return getWantsKeyboardFocus();
-    }
-    
-    Range<int> jView::getHighlightedRegion() const {return Range<int>();}
-    
-    void jView::setHighlightedRegion (const Range<int>& newRange) {}
-    
-    void jView::setTemporaryUnderlining (const Array <Range<int> >& underlinedRegions) {}
-    
-    String jView::getTextInRange (const Range<int>& range) const {return String();}
-    
-    void jView::insertTextAtCaret (const String& textToInsert) {}
-    
-    juce::Rectangle<int> jView::getCaretRectangle() {return juce::Rectangle<int>();};
-    */
+
     ApplicationCommandTarget* jView::getNextCommandTarget()
     {
         return findFirstTargetParentComponent();
@@ -264,6 +247,23 @@ namespace Kiwi
     {
         return performAction(ulong(info.commandID));
     }
+    
+    bool jViewTextInput::isTextInputActive() const
+    {
+        return true;
+    }
+    
+    Range<int> jViewTextInput::getHighlightedRegion() const {return Range<int>();}
+    
+    void jViewTextInput::setHighlightedRegion (const Range<int>& newRange) {}
+    
+    void jViewTextInput::setTemporaryUnderlining (const Array <Range<int> >& underlinedRegions) {}
+    
+    String jViewTextInput::getTextInRange (const Range<int>& range) const {return String();}
+    
+    void jViewTextInput::insertTextAtCaret (const String& textToInsert) {cout << textToInsert.toStdString() << endl;}
+    
+    juce::Rectangle<int> jViewTextInput::getCaretRectangle() {return juce::Rectangle<int>();};
 }
 
 #endif
