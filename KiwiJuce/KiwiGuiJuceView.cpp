@@ -63,24 +63,20 @@ namespace Kiwi
     void jView::move()
     {
         const auto bounds = GuiView::getBounds();
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
         {
-            const MessageManagerLock thread(Thread::getCurrentThread());
-            if(thread.lockWasGained())
-            {
-                Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
-            }
+            Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
         }
     }
     
     void jView::resize()
     {
         const auto bounds = GuiView::getBounds();
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
         {
-            const MessageManagerLock thread(Thread::getCurrentThread());
-            if(thread.lockWasGained())
-            {
-                Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
-            }
+            Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
         }
     }
     
@@ -100,12 +96,16 @@ namespace Kiwi
             sjView jchild = dynamic_pointer_cast<jView>(child);
             if(jchild)
             {
-                addAndMakeVisible(jchild.get());
-                jchild->setBounds(toJuce<int>(jchild->getController()->getBounds()));
-                sGuiController ctrl = child->getController();
-                if(ctrl->wantKeyboard())
+                const MessageManagerLock thread(Thread::getCurrentThread());
+                if(thread.lockWasGained())
                 {
-                    jchild->grabKeyboardFocus();
+                    addAndMakeVisible(jchild.get());
+                    jchild->setBounds(toJuce<int>(jchild->GuiView::getBounds()));
+                    sGuiController ctrl = child->getController();
+                    if(ctrl->wantKeyboard())
+                    {
+                        jchild->grabKeyboardFocus();
+                    }
                 }
             }
         }
