@@ -81,7 +81,7 @@ namespace Kiwi
         
         void drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool truncated = false) const override;
 
-        void fillPath(Kiwi::Path const& path) const override;
+        void fillPath(const Kiwi::Path& path) const override;
         
         void drawPath(const Kiwi::Path& path, double const thickness) const override;
         
