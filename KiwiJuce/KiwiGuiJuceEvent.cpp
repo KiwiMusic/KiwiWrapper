@@ -53,7 +53,8 @@ namespace Kiwi
         juce::Path jpath;
         if(!path.empty())
         {
-            Kiwi::Path::Node node = path.getNode(0);
+            /*
+            Kiwi::Sketch::Node node = path.getNode(0);
             jpath.startNewSubPath(node.point().x(), node.point().y());
             for(ulong i = 1; i < path.size(); i++)
             {
@@ -70,7 +71,7 @@ namespace Kiwi
                     {
                         if(++i < path.size())
                         {
-                            Kiwi::Path::Node next_node = path.getNode(i);
+                            Kiwi::Sketch::Node next_node = path.getNode(i);
                             jpath.quadraticTo(node.point().x(), node.point().y(),
                                               next_node.point().x(), next_node.point().y());
                         }
@@ -81,8 +82,8 @@ namespace Kiwi
                         i += 2;
                         if(i < path.size())
                         {
-                            Kiwi::Path::Node next_node = path.getNode(i-1);
-                            Kiwi::Path::Node next_node2 = path.getNode(i);
+                            Kiwi::Sketch::Node next_node = path.getNode(i-1);
+                            Kiwi::Sketch::Node next_node2 = path.getNode(i);
                             jpath.cubicTo(node.point().x(), node.point().y(),
                                           next_node.point().x(), next_node.point().y(),
                                           next_node2.point().x(), next_node2.point().y());
@@ -94,6 +95,7 @@ namespace Kiwi
                         break;
                 }
             }
+             */
         }
         return jpath;
     }
