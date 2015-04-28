@@ -48,45 +48,38 @@ namespace Kiwi
         g.drawText(String(text), juce::Rectangle<float>(x, y, w, h), juce::Justification(j), wrap);
     }
     
-    juce::Path toJuce(Kiwi::Path const& path) noexcept
+    juce::Path jSketch::createJucePath(Kiwi::Path const& path) const noexcept
     {
         juce::Path jpath;
         if(!path.empty())
         {
-            /*
-            Kiwi::Sketch::Node node = path.getNode(0);
-            jpath.startNewSubPath(node.point().x(), node.point().y());
-            for(ulong i = 1; i < path.size(); i++)
+            vector<Node> const& nodes = getNodes(path);
+            
+            jpath.startNewSubPath(toJuce<float>(nodes[0].point()));
+            
+            for(ulong i = 1; i < nodes.size(); i++)
             {
-                node = path.getNode(i);
+                const Node node = nodes[i];
                 switch(node.mode())
                 {
-                    case Kiwi::Path::Move:
-                        jpath.startNewSubPath(node.point().x(), node.point().y());
-                        break;
-                    case Kiwi::Path::Linear:
-                        jpath.lineTo(node.point().x(), node.point().y());
-                        break;
-                    case Kiwi::Path::Quadratic:
+                    case Sketch::Mode::Close:   jpath.closeSubPath(); break;
+                    case Sketch::Mode::Move:    jpath.startNewSubPath(node.point().x(), node.point().y()); break;
+                    case Sketch::Mode::Linear:  jpath.lineTo(node.point().x(), node.point().y()); break;
+                        
+                    case Sketch::Mode::Quadratic:
                     {
                         if(++i < path.size())
                         {
-                            Kiwi::Sketch::Node next_node = path.getNode(i);
-                            jpath.quadraticTo(node.point().x(), node.point().y(),
-                                              next_node.point().x(), next_node.point().y());
+                            jpath.quadraticTo(toJuce<float>(node.point()), toJuce<float>(nodes[i].point()));
                         }
                         break;
                     }
-                    case Kiwi::Path::Cubic:
+                    case Sketch::Mode::Cubic:
                     {
                         i += 2;
                         if(i < path.size())
                         {
-                            Kiwi::Sketch::Node next_node = path.getNode(i-1);
-                            Kiwi::Sketch::Node next_node2 = path.getNode(i);
-                            jpath.cubicTo(node.point().x(), node.point().y(),
-                                          next_node.point().x(), next_node.point().y(),
-                                          next_node2.point().x(), next_node2.point().y());
+                            jpath.cubicTo(toJuce<float>(node.point()), toJuce<float>(nodes[i-1].point()), toJuce<float>(nodes[i].point()));
                         }
                         break;
                     }
@@ -95,19 +88,20 @@ namespace Kiwi
                         break;
                 }
             }
-             */
         }
         return jpath;
     }
     
     void jSketch::fillPath(Kiwi::Path const& path) const
     {
-        g.fillPath(toJuce(path));
+        g.fillPath(createJucePath(path));
     }
     
-    void jSketch::drawPath(const Kiwi::Path& path, double const thickness) const
+    void jSketch::drawPath(const Path& path, double const thickness, const Path::Joint joint, const Path::LineCap linecap) const
     {
-        g.strokePath(toJuce(path), juce::PathStrokeType(thickness));
+        g.strokePath(createJucePath(path), juce::PathStrokeType(thickness,
+                                                                static_cast<juce::PathStrokeType::JointStyle>(joint),
+                                                                static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
     }
     
     void jSketch::drawLine(double x1, double y1, double x2, double y2, double thickness) const

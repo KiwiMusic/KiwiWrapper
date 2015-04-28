@@ -80,10 +80,12 @@ namespace Kiwi
         void fillAll() const override;
         
         void drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool truncated = false) const override;
+        
+        juce::Path createJucePath(Kiwi::Path const& path) const noexcept;
 
         void fillPath(const Kiwi::Path& path) const override;
         
-        void drawPath(const Kiwi::Path& path, double const thickness) const override;
+        void drawPath(const Path& path, double const thickness, const Path::Joint joint, const Path::LineCap linecap) const override;
         
         void drawLine(double x1, double y1, double x2, double y2, double thickness) const override;
         
