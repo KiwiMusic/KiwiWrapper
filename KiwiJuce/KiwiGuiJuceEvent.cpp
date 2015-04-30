@@ -92,41 +92,46 @@ namespace Kiwi
         return jpath;
     }
     
-    void jSketch::fillPath(Kiwi::Path const& path) const
+    void jSketch::fillPath(Kiwi::Path const& path, AffineMatrix const& matrix) const
     {
-        g.fillPath(createJucePath(path));
+        AffineMatrix const& mat = getMatrix();
+        if (mat.isIdentity() && matrix.isIdentity())
+        {
+            g.fillPath(createJucePath(path));
+        }
+        else if(matrix.isIdentity())
+        {
+            g.fillPath(createJucePath(path.transformed(mat)));
+        }
+        else
+        {
+            g.fillPath(createJucePath(path.transformed(mat).transformed(matrix)));
+        }
     }
     
-    void jSketch::drawPath(const Path& path, double const thickness, const Path::Joint joint, const Path::LineCap linecap) const
+    void jSketch::drawPath(Kiwi::Path const& path, double const thickness,
+                           const Path::Joint joint, const Path::LineCap linecap,
+                           AffineMatrix const& matrix) const
     {
-        g.strokePath(createJucePath(path), juce::PathStrokeType(thickness,
-                                                                static_cast<juce::PathStrokeType::JointStyle>(joint),
-                                                                static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
-    }
-    
-    void jSketch::drawLine(double x1, double y1, double x2, double y2, double thickness) const
-    {
-        g.drawLine(x1, y1, x2, y2, thickness);
-    }
-    
-    void jSketch::drawRectangle(double x, double y, double w, double h, double thickness, double rounded) const
-    {
-        g.drawRoundedRectangle(x, y, w, h, rounded, thickness);
-    }
-
-    void jSketch::fillRectangle(double x, double y, double w, double h, double rounded) const
-    {
-        g.fillRoundedRectangle(x, y, w, h, rounded);
-    }
-    
-    void jSketch::drawEllipse(double x, double y, double width, double height, double thickness) const
-    {
-        g.drawEllipse(x, y, width, height, thickness);
-    }
-    
-    void jSketch::fillEllipse(double x, double y, double width, double height) const
-    {
-        g.fillEllipse(x, y, width, height);
+        const AffineMatrix mat = getMatrix();
+        if (mat.isIdentity() && matrix.isIdentity())
+        {
+            g.strokePath(createJucePath(path), juce::PathStrokeType(thickness,
+                                                                    static_cast<juce::PathStrokeType::JointStyle>(joint),
+                                                                    static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
+        }
+        else if(matrix.isIdentity())
+        {
+            g.strokePath(createJucePath(path.transformed(mat)), juce::PathStrokeType(thickness,
+                                                                    static_cast<juce::PathStrokeType::JointStyle>(joint),
+                                                                    static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
+        }
+        else
+        {
+            g.strokePath(createJucePath(path.transformed(mat).transformed(matrix)), juce::PathStrokeType(thickness,
+                                                                                    static_cast<juce::PathStrokeType::JointStyle>(joint),
+                                                                                    static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
+        }
     }
     
     jEventMouse::jEventMouse(Type const& type, juce::MouseEvent const& event) noexcept :

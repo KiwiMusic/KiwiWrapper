@@ -83,19 +83,12 @@ namespace Kiwi
         
         juce::Path createJucePath(Kiwi::Path const& path) const noexcept;
 
-        void fillPath(const Kiwi::Path& path) const override;
+        void fillPath(Kiwi::Path const& path, AffineMatrix const& matrix = AffineMatrix()) const override;
         
-        void drawPath(const Path& path, double const thickness, const Path::Joint joint, const Path::LineCap linecap) const override;
-        
-        void drawLine(double x1, double y1, double x2, double y2, double thickness) const override;
-        
-        void drawRectangle(double x, double y, double w, double h, double thickness, double rounded = 0.) const override;
-        
-        void fillRectangle(double x, double y, double w, double h, double rounded = 0.) const override;
-        
-        void drawEllipse(double x, double y, double width, double height, double thickness = 0.) const override;
-        
-        void fillEllipse(double x, double y, double width, double height) const override;
+        void drawPath(Kiwi::Path const& path, double const thickness,
+                      const Path::Joint joint = Path::Joint::Mitered,
+                      const Path::LineCap linecap = Path::LineCap::Butt,
+                      AffineMatrix const& matrix = AffineMatrix()) const override;
     };
     
     class jEventMouse : public Kiwi::MouseEvent
