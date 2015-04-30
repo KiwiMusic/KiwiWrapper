@@ -34,7 +34,7 @@ namespace Kiwi
     
     void jSketch::setFont(Kiwi::Font const& font)
     {
-        juce::Font jfont(font.getName(), (float)font.getSize(), font.getStyle());
+        juce::Font jfont(font.getName(), float(font.getHeight()), font.getStyle());
         g.setFont(jfont);
     }
     

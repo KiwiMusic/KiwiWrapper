@@ -65,13 +65,37 @@ namespace Kiwi
          */
         Rectangle getScreenBounds(Point const& pt) const noexcept override;
         
+        //! Retrieves the width of a line.
+        /** The function retreives the width of a line depending on a font.
+         @param font The font.
+         @param line The line.
+         @return The width of the line.
+         */
+        double getLineWidth(Font const& font, string const& line) const noexcept override;
+        
+        //! Retrieves the width of a line.
+        /** The function retreives the width of a line depending on a font.
+         @param font The font.
+         @param line The line.
+         @return The width of the line.
+         */
+        double getLineWidth(Font const& font, wstring const& text) const noexcept override;
+        
         //! Retrieves the width of a text.
         /** The function the width of a text depending on a font.
          @param font The font.
          @param text The text.
          @return The width of the text.
          */
-        double getTextWidth(Font const& font, wstring const& text) const noexcept override;
+        Size getTextSize(Font const& font, string const& text, const double width = 0.) const noexcept override;
+        
+        //! Retrieves the width of a text.
+        /** The function the width of a text depending on a font.
+         @param font The font.
+         @param text The text.
+         @return The width of the text.
+         */
+        Size getTextSize(Font const& font, wstring const& text, const double width = 0.) const noexcept override;
         
         //! Retrieves all the fonts from the system.
         /** The function retrieves all the fonts from the system.
