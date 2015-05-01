@@ -51,6 +51,10 @@ namespace Kiwi
         return Colour::fromFloatRGBA(color.red(), color.green(), color.blue(), color.alpha());
     }
     
+    static inline juce::Font toJuce(Kiwi::Font const& font) noexcept {
+        return juce::Font(font.getName(), (float)font.getSize(), font.getStyle());
+    }
+    
     static inline Kiwi::Color toKiwi(juce::Colour const& color) noexcept {
         return Kiwi::Color(color.getFloatRed(), color.getFloatGreen(), color.getFloatBlue(), color.getFloatAlpha());
     }
@@ -59,36 +63,23 @@ namespace Kiwi
     {
     private:
         Graphics &g;
-        Kiwi::Rectangle bounds;
-    public:
+        juce::Path createJucePath(Kiwi::Path const& path) const noexcept;
         
-        inline jSketch(Graphics& graphics) noexcept :
-        g(graphics), bounds(toKiwi(graphics.getClipBounds())){}
+    public:
+        inline jSketch(Graphics& graphics) noexcept : Sketch(toKiwi(graphics.getClipBounds())), g(graphics) {}
         
         inline ~jSketch() noexcept {}
         
-        inline Kiwi::Point getPosition() const noexcept override {return bounds.position();}
+        void internalFillPath(Path const& path, Color const& color) const noexcept override;
         
-        inline Kiwi::Size getSize() const noexcept override {return bounds.size();}
+        void internalDrawPath(Path const& path,
+                              double const thickness,
+                              const Path::Joint joint,
+                              const Path::LineCap linecap,
+                              Color const& color) const noexcept override;
         
-        inline Kiwi::Rectangle getBounds() const noexcept override {return bounds;}
-        
-        void setColor(Kiwi::Color const& color) override;
-        
-        void setFont(Kiwi::Font const& font) override;
-        
-        void fillAll() const override;
-        
-        void drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool truncated = false) const override;
-        
-        juce::Path createJucePath(Kiwi::Path const& path) const noexcept;
-
-        void fillPath(Kiwi::Path const& path, AffineMatrix const& matrix = AffineMatrix()) const override;
-        
-        void drawPath(Kiwi::Path const& path, double const thickness,
-                      const Path::Joint joint = Path::Joint::Mitered,
-                      const Path::LineCap linecap = Path::LineCap::Butt,
-                      AffineMatrix const& matrix = AffineMatrix()) const override;
+        void internalDrawText(string const& text, double x, double y, double w, double h, Font const& font,
+                              Font::Justification j, bool truncated = false) const noexcept override;
     };
     
     class jEventMouse : public Kiwi::MouseEvent

@@ -27,25 +27,11 @@
 
 namespace Kiwi
 {
-    void jSketch::setColor(Kiwi::Color const& color)
+    void jSketch::internalDrawText(string const& text, double x, double y, double w, double h, Font const& font,
+                                   Font::Justification j, bool truncated) const noexcept
     {
-        g.setColour(toJuce(color));
-    }
-    
-    void jSketch::setFont(Kiwi::Font const& font)
-    {
-        juce::Font jfont(font.getName(), (float)font.getSize(), font.getStyle());
-        g.setFont(jfont);
-    }
-    
-    void jSketch::fillAll() const
-    {
-        g.fillAll();
-    }
-    
-    void jSketch::drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool wrap) const
-    {
-        g.drawText(String(text), juce::Rectangle<float>(x, y, w, h), juce::Justification(j), wrap);
+        g.setFont(toJuce(font));
+        g.drawText(String(text), juce::Rectangle<float>(x, y, w, h), juce::Justification(j), truncated);
     }
     
     juce::Path jSketch::createJucePath(Kiwi::Path const& path) const noexcept
@@ -92,47 +78,24 @@ namespace Kiwi
         return jpath;
     }
     
-    void jSketch::fillPath(Kiwi::Path const& path, AffineMatrix const& matrix) const
+    void jSketch::internalFillPath(Path const& path, Color const& color) const noexcept
     {
-        AffineMatrix const& mat = getMatrix();
-        if (mat.isIdentity() && matrix.isIdentity())
-        {
-            g.fillPath(createJucePath(path));
-        }
-        else if(matrix.isIdentity())
-        {
-            g.fillPath(createJucePath(path.transformed(mat)));
-        }
-        else
-        {
-            g.fillPath(createJucePath(path.transformed(mat).transformed(matrix)));
-        }
+        g.setColour(toJuce(color));
+        g.fillPath(createJucePath(path));
     }
     
-    void jSketch::drawPath(Kiwi::Path const& path, double const thickness,
-                           const Path::Joint joint, const Path::LineCap linecap,
-                           AffineMatrix const& matrix) const
+    void jSketch::internalDrawPath(Path const& path,
+                                   double const thickness,
+                                   const Path::Joint joint,
+                                   const Path::LineCap linecap,
+                                   Color const& color) const noexcept
     {
-        const AffineMatrix mat = getMatrix();
-        if (mat.isIdentity() && matrix.isIdentity())
-        {
-            g.strokePath(createJucePath(path), juce::PathStrokeType(thickness,
-                                                                    static_cast<juce::PathStrokeType::JointStyle>(joint),
-                                                                    static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
-        }
-        else if(matrix.isIdentity())
-        {
-            g.strokePath(createJucePath(path.transformed(mat)), juce::PathStrokeType(thickness,
-                                                                    static_cast<juce::PathStrokeType::JointStyle>(joint),
-                                                                    static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
-        }
-        else
-        {
-            g.strokePath(createJucePath(path.transformed(mat).transformed(matrix)), juce::PathStrokeType(thickness,
-                                                                                    static_cast<juce::PathStrokeType::JointStyle>(joint),
-                                                                                    static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
-        }
+        g.setColour(toJuce(color));
+        g.strokePath(createJucePath(path), juce::PathStrokeType(thickness,
+                                                                static_cast<juce::PathStrokeType::JointStyle>(joint),
+                                                                static_cast<juce::PathStrokeType::EndCapStyle>(linecap)));
     }
+    
     
     jEventMouse::jEventMouse(Type const& type, juce::MouseEvent const& event) noexcept :
     Kiwi::MouseEvent(type, event.x, event.y, event.mods.getRawFlags(), 0., 0., event.mouseWasClicked(), event.getMouseDownPosition().x, event.getMouseDownPosition().y, event.getNumberOfClicks()),
