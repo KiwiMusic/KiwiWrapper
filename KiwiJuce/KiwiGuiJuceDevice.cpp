@@ -68,10 +68,32 @@ namespace Kiwi
         return fonts;
     }
     
-    double KiwiJuceGuiDeviceManager::getTextWidth(Font const& font, wstring const& text) const noexcept
+    double KiwiJuceGuiDeviceManager::getLineWidth(Font const& font, string const& line) const noexcept
     {
-        juce::Font jfont(font.getName(), float(font.getSize()), font.getStyle());
-        return jfont.getStringWidth(String(text.c_str()));
+        juce::Font jfont(font.getName(), float(font.getHeight()), font.getStyle());
+        return jfont.getStringWidth(String(line.c_str()));
+    }
+    
+    double KiwiJuceGuiDeviceManager::getLineWidth(Font const& font, wstring const& line) const noexcept
+    {
+        juce::Font jfont(font.getName(), float(font.getHeight()), font.getStyle());
+        return jfont.getStringWidth(String(line.c_str()));
+    }
+    
+    Size KiwiJuceGuiDeviceManager::getTextSize(Font const& font, string const& text, const double width) const noexcept
+    {
+        juce::GlyphArrangement glypher;
+        glypher.addJustifiedText(juce::Font(font.getName(), float(font.getHeight()), font.getStyle()), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::left);
+        const juce::Rectangle<float> bounds = glypher.getBoundingBox(0, -1, true);
+        return Size(bounds.getWidth(), bounds.getHeight());
+    }
+    
+    Size KiwiJuceGuiDeviceManager::getTextSize(Font const& font, wstring const& text, const double width) const noexcept
+    {
+        juce::GlyphArrangement glypher;
+        glypher.addJustifiedText(juce::Font(font.getName(), float(font.getHeight()), font.getStyle()), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::left);
+        const juce::Rectangle<float> bounds = glypher.getBoundingBox(0, -1, true);
+        return Size(bounds.getWidth(), bounds.getHeight());
     }
 }
 
