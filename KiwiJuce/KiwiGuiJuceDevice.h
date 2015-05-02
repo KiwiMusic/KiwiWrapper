@@ -104,6 +104,125 @@ namespace Kiwi
         vector<Font> getSystemFonts() const noexcept override;
         
     };
+    
+    class jInternalFont : public Kiwi::Font::Intern, private juce::Font
+    {
+    public:
+        
+        //! Font constructor.
+        /** Initializes a intern font with a name, size and style.
+         @param name    The name of the font.
+         @param height  The height of the font.
+         @param style   The style of the font.
+         */
+        inline jInternalFont(string const& name, double height, Kiwi::Font::Style style) noexcept :
+        Kiwi::Font::Intern(name, height, style),
+        juce::Font(juce::String(name), float(height), int(style)) {}
+        
+        //! Destructor.
+        /** The function does nothing.
+         */
+        inline ~jInternalFont() noexcept {};
+    
+        //! Retrieves if the font is available in the system.
+        /** The function retrieves if the font is available in the system.
+         @return true if the font is available otherwise false.
+         */
+        inline bool isValid() const noexcept override
+        {
+            return true;
+        }
+        
+        //! Retrieves the font name.
+        /** The function retrieves the name of the font.
+         @return The name of the font.
+         */
+        inline shared_ptr<Intern> getNewReference() const noexcept override
+        {
+            return make_shared<jInternalFont>(getName(), getHeight(), Kiwi::Font::Style(getStyle()));
+        }
+    
+        //! Retrieves the font height.
+        /** The function retrieves the height of the font.
+         @return The height of the font.
+         */
+        inline double getHeight() const noexcept override
+        {
+            return juce::Font::getHeight();
+        }
+        
+        //! Retrieves the font style.
+        /** The function retrieves the style of the font.
+         @return true if the font is valid, otherwise false.
+         */
+        inline unsigned getStyle() const noexcept override
+        {
+            return unsigned(juce::Font::getStyleFlags());
+        }
+        
+        //! Sets the font height.
+        /** The function sets the height of the font.
+         @param size The height of the font.
+         */
+        inline void setHeight(const double size) override
+        {
+            juce::Font::setHeight(float(size));
+        }
+        
+        //! Sets the font style.
+        /** The function sets the style of the font.
+         @param style The style of the font as a set flags.
+         */
+        inline void setStyle(const Kiwi::Font::Style style) override
+        {
+            juce::Font::setStyleFlags(int(style));
+        }
+        
+        //! Retrieves the width of a character.
+        /** The function retreives the width of a character for the font.
+         @param c The character.
+         @return The width of the character.
+         */
+        double getCharacterWidth(char const& c) const noexcept override;
+        
+        //! Retrieves the width of a character.
+        /** The function retreives the width of a character for the font.
+         @param c The character.
+         @return The width of the character.
+         */
+        double getCharacterWidth(wchar_t const& c) const noexcept override;
+        
+        //! Retrieves the width of a line.
+        /** The function retreives the width of a line for the font.
+         @param line The line.
+         @return The width of the line.
+         */
+        double getLineWidth(string const& line) const noexcept override;
+        
+        //! Retrieves the width of a line.
+        /** The function retreives the width of a line for the font.
+         @param line The line.
+         @return The width of the line.
+         */
+        double getLineWidth(wstring const& line) const noexcept override;
+        
+        //! Retrieves the size of a text.
+        /** The function the size of a text depending for the font.
+         @param text The text.
+         @param width The width limit of the text, zero means no limits.
+         @return The width of the text.
+         */
+        Size getTextSize(string const& text, const double width = 0.) const noexcept override;
+        
+        //! Retrieves the size of a text.
+        /** The function the width of a text depending for the font.
+         @param text The text.
+         @param width The width limit of the text, zero means no limits.
+         @return The width of the text.
+         */
+        Size getTextSize(wstring const& text, const double width = 0.) const noexcept override;
+        
+    };
 }
 
 #endif

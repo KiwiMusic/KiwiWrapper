@@ -64,6 +64,7 @@ namespace Kiwi
         for(int i = 0; i < results.size(); i++)
         {
             fonts.push_back(Font(results.getUnchecked(i).getTypefaceName().toStdString()));
+            cout << fonts[i].getName() << endl;
         }
         return fonts;
     }
@@ -92,6 +93,42 @@ namespace Kiwi
     {
         juce::GlyphArrangement glypher;
         glypher.addJustifiedText(juce::Font(font.getName(), float(font.getHeight()), font.getStyle()), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::left);
+        const juce::Rectangle<float> bounds = glypher.getBoundingBox(0, -1, true);
+        return Size(bounds.getWidth(), bounds.getHeight());
+    }
+            
+    double jInternalFont::getCharacterWidth(char const& c) const noexcept
+    {
+        return double(juce::Font::getStringWidth(juce::String(c)));
+    }
+    
+    double jInternalFont::getCharacterWidth(wchar_t const& c) const noexcept
+    {
+        return double(juce::Font::getStringWidth(juce::String(c)));
+    }
+    
+    double jInternalFont::getLineWidth(string const& line) const noexcept
+    {
+        return double(juce::Font::getStringWidth(juce::String(line)));
+    }
+    
+    double jInternalFont::getLineWidth(wstring const& line) const noexcept
+    {
+        return double(juce::Font::getStringWidth(juce::String(line.c_str())));
+    }
+    
+    Size jInternalFont::getTextSize(string const& text, const double width) const noexcept
+    {
+        juce::GlyphArrangement glypher;
+        glypher.addJustifiedText(juce::Font(*this), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::left);
+        const juce::Rectangle<float> bounds = glypher.getBoundingBox(0, -1, true);
+        return Size(bounds.getWidth(), bounds.getHeight());
+    }
+    
+    Size jInternalFont::getTextSize(wstring const& text, const double width) const noexcept
+    {
+        juce::GlyphArrangement glypher;
+        glypher.addJustifiedText(juce::Font(*this), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::left);
         const juce::Rectangle<float> bounds = glypher.getBoundingBox(0, -1, true);
         return Size(bounds.getWidth(), bounds.getHeight());
     }
