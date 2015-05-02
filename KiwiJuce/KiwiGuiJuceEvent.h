@@ -79,6 +79,9 @@ namespace Kiwi
         
         void fillAll() const override;
         
+        void drawText(wstring const& text, Rectangle const& rect, Font::Justification j, bool truncated = false) const override;
+        void drawText(wstring const& text, double x, double y, double w, double h, Font::Justification j, bool truncated = false) const override;
+        void drawText(string const& text, Rectangle const& rect, Font::Justification j, bool truncated = false) const override;
         void drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool truncated = false) const override;
         
         juce::Path createJucePath(Kiwi::Path const& path) const noexcept;

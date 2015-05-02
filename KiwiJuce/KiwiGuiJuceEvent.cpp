@@ -43,9 +43,24 @@ namespace Kiwi
         g.fillAll();
     }
     
+    void jSketch::drawText(wstring const& text, Rectangle const& rect, Font::Justification j, bool truncated) const
+    {
+        g.drawMultiLineText(String(text.c_str()), rect.x(), g.getCurrentFont().getAscent(), rect.width());
+    }
+    
+    void jSketch::drawText(wstring const& text, double x, double y, double w, double h, Font::Justification j, bool truncated) const
+    {
+        g.drawMultiLineText(String(text.c_str()), x, g.getCurrentFont().getAscent(), w);
+    }
+    
+    void jSketch::drawText(string const& text, Rectangle const& rect, Font::Justification j, bool truncated) const
+    {
+        g.drawMultiLineText(String(text), rect.x(), g.getCurrentFont().getAscent(), rect.width());
+    }
+    
     void jSketch::drawText(string const& text, double x, double y, double w, double h, Kiwi::Font::Justification j, bool wrap) const
     {
-        g.drawText(String(text), juce::Rectangle<float>(x, y, w, h), juce::Justification(j), wrap);
+        g.drawMultiLineText(String(text), x, g.getCurrentFont().getAscent(), w);
     }
     
     juce::Path jSketch::createJucePath(Kiwi::Path const& path) const noexcept

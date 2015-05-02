@@ -96,17 +96,31 @@ namespace Kiwi
     Size jInternalFont::getTextSize(string const& text, const double width) const noexcept
     {
         juce::GlyphArrangement glypher;
-        glypher.addJustifiedText(juce::Font(*this), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::left);
+        glypher.addJustifiedText(juce::Font(*this), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::topLeft);
         const juce::Rectangle<float> bounds = glypher.getBoundingBox(0, -1, true);
-        return Size(bounds.getWidth(), bounds.getHeight());
+        if(text[text.size()-1ul] == '\n')
+        {
+            return Size(bounds.getWidth(), bounds.getHeight() + getHeight());
+        }
+        else
+        {
+            return Size(bounds.getWidth(), bounds.getHeight());
+        }
     }
     
     Size jInternalFont::getTextSize(wstring const& text, const double width) const noexcept
     {
         juce::GlyphArrangement glypher;
-        glypher.addJustifiedText(juce::Font(*this), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::left);
+        glypher.addJustifiedText(juce::Font(*this), String(text.c_str()), 0., 0., width > 0. ? width : numeric_limits<float>::max(), juce::Justification::topLeft);
         const juce::Rectangle<float> bounds = glypher.getBoundingBox(0, -1, true);
-        return Size(bounds.getWidth(), bounds.getHeight());
+        if(text[text.size()-1ul] == L'\n')
+        {
+            return Size(bounds.getWidth(), bounds.getHeight() + getHeight());
+        }
+        else
+        {
+            return Size(bounds.getWidth(), bounds.getHeight());
+        }
     }
 }
 
