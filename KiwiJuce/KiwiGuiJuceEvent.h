@@ -52,7 +52,7 @@ namespace Kiwi
     }
     
     static inline juce::Font toJuce(Kiwi::Font const& font) noexcept {
-        return juce::Font(font.getName(), (float)font.getSize(), font.getStyle());
+        return juce::Font(font.getName(), (float)font.getHeight(), font.getStyle());
     }
     
     static inline Kiwi::Color toKiwi(juce::Colour const& color) noexcept {
@@ -80,6 +80,9 @@ namespace Kiwi
         
         void internalDrawText(string const& text, double x, double y, double w, double h, Font const& font,
                               Font::Justification j, bool truncated = false) const noexcept override;
+        
+        void internalDrawText(wstring const& text, double x, double y, double w, double h, Font const& font,
+                                      Font::Justification j, bool truncated) const noexcept override;
     };
     
     class jEventMouse : public Kiwi::MouseEvent

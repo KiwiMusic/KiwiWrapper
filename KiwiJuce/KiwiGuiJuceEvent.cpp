@@ -30,8 +30,17 @@ namespace Kiwi
     void jSketch::internalDrawText(string const& text, double x, double y, double w, double h, Font const& font,
                                    Font::Justification j, bool truncated) const noexcept
     {
-        g.setFont(toJuce(font));
-        g.drawText(String(text), juce::Rectangle<float>(x, y, w, h), juce::Justification(j), truncated);
+        const juce::Font jfont = toJuce(font);
+        g.setFont(jfont);
+        g.drawMultiLineText(String(text), x, jfont.getAscent(), w);
+    }
+    
+    void jSketch::internalDrawText(wstring const& text, double x, double y, double w, double h, Font const& font,
+                          Font::Justification j, bool truncated) const noexcept
+    {
+        const juce::Font jfont = toJuce(font);
+        g.setFont(jfont);
+        g.drawMultiLineText(String(text.c_str()), x, jfont.getAscent(), w);
     }
     
     juce::Path jSketch::createJucePath(Kiwi::Path const& path) const noexcept
