@@ -26,8 +26,8 @@
 #ifndef __DEF_KIWI_GUI_JUCE_DEFINE__
 #define __DEF_KIWI_GUI_JUCE_DEFINE__
 
-#include "../../KiwiGui/KiwiGui.h"
 #include <JuceHeader.h>
+#include "../../KiwiGui/KiwiGui.h"
 
 namespace Kiwi
 {
