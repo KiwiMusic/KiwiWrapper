@@ -75,22 +75,25 @@ namespace Kiwi
             
     double jInternalFont::getCharacterWidth(char const& c) const noexcept
     {
-        return double(juce::Font::getStringWidth(juce::String(c)));
+        return double(juce::Font::getStringWidthFloat(juce::String(c))) - juce::Font::getExtraKerningFactor();
     }
     
     double jInternalFont::getCharacterWidth(wchar_t const& c) const noexcept
     {
-        return double(juce::Font::getStringWidth(juce::String(c)));
+        Array<int> newGlyphs;
+        Array<float> xOffsets;
+        juce::Font::getGlyphPositions(String(c), newGlyphs, xOffsets);
+        return double(xOffsets.getUnchecked(1) - juce::Font::getExtraKerningFactor());
     }
     
     double jInternalFont::getLineWidth(string const& line) const noexcept
     {
-        return double(juce::Font::getStringWidth(juce::String(line)));
+        return double(juce::Font::getStringWidthFloat(juce::String(line)));
     }
     
     double jInternalFont::getLineWidth(wstring const& line) const noexcept
     {
-        return double(juce::Font::getStringWidth(juce::String(line.c_str())));
+        return double(juce::Font::getStringWidthFloat(juce::String(line.c_str())));
     }
     
     Size jInternalFont::getTextSize(string const& text, const double width) const noexcept
