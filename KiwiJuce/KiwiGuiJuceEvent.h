@@ -72,10 +72,8 @@ namespace Kiwi
         
         void internalFillPath(Path const& path, Color const& color) const noexcept override;
         
-        void internalDrawPath(Path const& path,
-                              double const thickness,
-                              const Path::Joint joint,
-                              const Path::LineCap linecap,
+        void internalDrawPath(Path const& path, double const thickness,
+                              const Path::Joint joint, const Path::LineCap linecap,
                               Color const& color) const noexcept override;
         
         void internalDrawText(string const& text, double x, double y, double w, double h, Font const& font,
