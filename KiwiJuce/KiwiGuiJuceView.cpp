@@ -60,7 +60,7 @@ namespace Kiwi
         }
     }
     
-    void jView::move()
+    void jView::boundsChanged()
     {
         const auto bounds = GuiView::getBounds();
         const MessageManagerLock thread(Thread::getCurrentThread());
@@ -70,7 +70,17 @@ namespace Kiwi
         }
     }
     
-    void jView::resize()
+    void jView::positionChanged()
+    {
+        const auto bounds = GuiView::getBounds();
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
+        }
+    }
+    
+    void jView::sizeChanged()
     {
         const auto bounds = GuiView::getBounds();
         const MessageManagerLock thread(Thread::getCurrentThread());
@@ -89,7 +99,7 @@ namespace Kiwi
         }
     }
     
-    void jView::addChild(sGuiView child)
+    void jView::addChildView(sGuiView child)
     {
         if(child)
         {
@@ -111,7 +121,7 @@ namespace Kiwi
         }
     }
     
-    void jView::removeChild(sGuiView child)
+    void jView::removeChildView(sGuiView child)
     {
         if(child)
         {

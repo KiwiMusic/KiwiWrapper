@@ -43,14 +43,15 @@ namespace Kiwi
         ~jView();
         
         void redraw() override;
-        void move() override;
-        void resize() override;
+        void boundsChanged() override;
+        void positionChanged() override;
+        void sizeChanged() override;
         void grabFocus() override;
         void addToDesktop() override;
         void removeFromDesktop() override;
         void setMinimize(const bool state) override;
-        void addChild(sGuiView child) override;
-        void removeChild(sGuiView child) override;
+        void addChildView(sGuiView child) override;
+        void removeChildView(sGuiView child) override;
         
         void paint(Graphics& g) override;
         void mouseEnter(const juce::MouseEvent& e) override;
