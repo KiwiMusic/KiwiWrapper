@@ -158,12 +158,8 @@ namespace Kiwi
     
     void jView::paint(Graphics& g)
     {
-        sGuiController ctrl = getController();
-        if(ctrl)
-        {
-            jSketch d(g);
-            ctrl->draw(d);
-        }
+        jSketch d(g);
+        draw(d);
     }
     
     void jView::mouseDown(const juce::MouseEvent& e)
