@@ -45,6 +45,7 @@ namespace Kiwi
         void redraw() override;
         void move() override;
         void resize() override;
+        void setVisible(const bool visible);
         void grabFocus() override;
         void addToDesktop() override;
         void removeFromDesktop() override;

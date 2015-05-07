@@ -80,12 +80,25 @@ namespace Kiwi
         }
     }
     
-    void jView::grabFocus()
+    void jView::setVisible(const bool visible)
     {
         const MessageManagerLock thread(Thread::getCurrentThread());
         if(thread.lockWasGained())
         {
-            grabKeyboardFocus();
+            Component::setVisible(visible);
+        }
+    }
+    
+    void jView::grabFocus()
+    {
+        sGuiController ctrl = getController();
+        if (ctrl && ctrl->wantKeyboard())
+        {
+            const MessageManagerLock thread(Thread::getCurrentThread());
+            if(thread.lockWasGained())
+            {
+                grabKeyboardFocus();
+            }
         }
     }
     
