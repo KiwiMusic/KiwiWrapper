@@ -46,6 +46,7 @@ namespace Kiwi
         void boundsChanged() override;
         void positionChanged() override;
         void sizeChanged() override;
+        void behaviorChanged() override;
         void grabFocus() override;
         void addToDesktop() override;
         void removeFromDesktop() override;

@@ -35,15 +35,8 @@ namespace Kiwi
     jView::jView(sJuceGuiDeviceManager device, sGuiController ctrl) noexcept : GuiView(ctrl),
     m_device(device)
     {
-        setInterceptsMouseClicks(ctrl->wantMouse(), true);
-        setWantsKeyboardFocus(ctrl->wantKeyboard());
-        setBounds(toJuce<int>(GuiView::getBounds()));
-        sJuceGuiDeviceManager mng = m_device.lock();
-        if(mng && ctrl->wantActions())
-        {
-            mng->registerAllCommandsForTarget(this);
-            this->addKeyListener(mng->getKeyMappings());
-        }
+        boundsChanged();
+        behaviorChanged();
     }
     
     jView::~jView()
@@ -87,6 +80,23 @@ namespace Kiwi
         if(thread.lockWasGained())
         {
             Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
+        }
+    }
+    
+    void jView::behaviorChanged()
+    {
+        const auto bounds = GuiView::getBounds();
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            Component::setWantsKeyboardFocus(wantKeyboard());
+            Component::setInterceptsMouseClicks(wantMouse(), true);
+            sJuceGuiDeviceManager mng = m_device.lock();
+            if(mng && wantActions())
+            {
+                mng->registerAllCommandsForTarget(this);
+                this->addKeyListener(mng->getKeyMappings());
+            }
         }
     }
     
