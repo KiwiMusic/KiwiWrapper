@@ -80,6 +80,7 @@ namespace Kiwi
         if(thread.lockWasGained())
         {
             Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
+        
         }
     }
     
@@ -106,6 +107,24 @@ namespace Kiwi
         if(thread.lockWasGained())
         {
             grabKeyboardFocus();
+        }
+    }
+    
+    void jView::toBack()
+    {
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            Component::toBack();
+        }
+    }
+    
+    void jView::toFont()
+    {
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            Component::toFront(false);
         }
     }
     

@@ -48,6 +48,8 @@ namespace Kiwi
         void sizeChanged() override;
         void behaviorChanged() override;
         void grabFocus() override;
+        void toBack() override;
+        void toFont() override;
         void addToDesktop() override;
         void removeFromDesktop() override;
         void setMinimize(const bool state) override;
