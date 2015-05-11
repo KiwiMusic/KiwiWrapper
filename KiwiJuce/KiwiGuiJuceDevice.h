@@ -31,7 +31,9 @@
 namespace Kiwi
 {
     
-    class KiwiJuceGuiDeviceManager : public GuiDeviceManager, public ApplicationCommandManager, public enable_shared_from_this<KiwiJuceGuiDeviceManager>
+    class KiwiJuceGuiDeviceManager :    public GuiDeviceManager,
+                                        public ApplicationCommandManager,
+                                        public enable_shared_from_this<KiwiJuceGuiDeviceManager>
     {
     public:
         
