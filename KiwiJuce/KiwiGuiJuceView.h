@@ -49,7 +49,7 @@ namespace Kiwi
         void behaviorChanged() override;
         void grabFocus() override;
         void toBack() override;
-        void toFont() override;
+        void toFront() override;
         void addToDesktop() override;
         void removeFromDesktop() override;
         void setMinimize(const bool state) override;
@@ -68,6 +68,7 @@ namespace Kiwi
         void focusGained(FocusChangeType cause) override;
         void focusLost(FocusChangeType cause) override;
         bool keyPressed(const KeyPress& key) override;
+        bool hitTest(int x, int y) override;
         
         ApplicationCommandTarget* getNextCommandTarget() override;
         void getAllCommands(Array <CommandID>& commands) override;

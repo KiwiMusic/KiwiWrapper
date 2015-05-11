@@ -86,12 +86,11 @@ namespace Kiwi
     
     void jView::behaviorChanged()
     {
-        const auto bounds = GuiView::getBounds();
         const MessageManagerLock thread(Thread::getCurrentThread());
         if(thread.lockWasGained())
         {
-            Component::setWantsKeyboardFocus(wantKeyboard());
             Component::setInterceptsMouseClicks(wantMouse(), true);
+            Component::setWantsKeyboardFocus(wantKeyboard());
             sJuceGuiDeviceManager mng = m_device.lock();
             if(mng && wantActions())
             {
@@ -119,7 +118,7 @@ namespace Kiwi
         }
     }
     
-    void jView::toFont()
+    void jView::toFront()
     {
         const MessageManagerLock thread(Thread::getCurrentThread());
         if(thread.lockWasGained())
@@ -254,6 +253,11 @@ namespace Kiwi
     bool jView::keyPressed(const KeyPress& key)
     {
         return receive(KeyboardEvent(key.getKeyCode(), (long)key.getModifiers().getRawFlags(), key.getTextCharacter()));
+    }
+    
+    bool jView::hitTest(int x, int y)
+    {
+        return GuiView::contains(Point(double(x + getX()), double(y + getY())));
     }
 
     ApplicationCommandTarget* jView::getNextCommandTarget()
