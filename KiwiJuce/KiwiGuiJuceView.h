@@ -47,6 +47,7 @@ namespace Kiwi
         void positionChanged() override;
         void sizeChanged() override;
         void behaviorChanged() override;
+        void setMouseCursor(Kiwi::MouseCursor const& cursor) override;
         void grabFocus() override;
         void toBack() override;
         void toFront() override;
