@@ -51,6 +51,7 @@ namespace Kiwi
         void grabFocus() override;
         void toBack() override;
         void toFront() override;
+        void alwaysOnTop(const bool alwaysOnTop) override;
         void addToDesktop() override;
         void removeFromDesktop() override;
         void setMinimize(const bool state) override;
@@ -58,6 +59,7 @@ namespace Kiwi
         void removeChildView(sGuiView child) override;
         
         void paint(Graphics& g) override;
+        void paintOverChildren(Graphics& g) override;
         void mouseEnter(const juce::MouseEvent& e) override;
         void mouseExit(const juce::MouseEvent& e) override;
         void mouseDown(const juce::MouseEvent& e) override;

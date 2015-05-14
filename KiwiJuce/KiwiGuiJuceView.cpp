@@ -158,6 +158,15 @@ namespace Kiwi
         }
     }
     
+    void jView::alwaysOnTop(const bool alwaysOnTop)
+    {
+        const MessageManagerLock thread(Thread::getCurrentThread());
+        if(thread.lockWasGained())
+        {
+            Component::setAlwaysOnTop(alwaysOnTop);
+        }
+    }
+    
     void jView::addChildView(sGuiView child)
     {
         if(child)
@@ -229,6 +238,12 @@ namespace Kiwi
     {
         jSketch d(g);
         draw(d);
+    }
+    
+    void jView::paintOverChildren(Graphics& g)
+    {
+        jSketch d(g);
+        drawOver(d);
     }
     
     void jView::mouseDown(const juce::MouseEvent& e)
