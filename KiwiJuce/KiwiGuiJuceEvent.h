@@ -80,7 +80,13 @@ namespace Kiwi
                               Font::Justification j, bool truncated = false) const noexcept override;
         
         void internalDrawText(wstring const& text, double x, double y, double w, double h, Font const& font,
-                                      Font::Justification j, bool truncated) const noexcept override;
+                                      Font::Justification j, bool truncated = false) const noexcept override;
+        
+        void internalDrawTextLine(string const& text, double x, double y, double w, double h, Font const& font,
+                              Font::Justification j, bool ellipses = false) const noexcept override;
+        
+        void internalDrawTextLine(wstring const& text, double x, double y, double w, double h, Font const& font,
+                              Font::Justification j, bool ellipses = false) const noexcept override;
     };
     
     class jEventMouse : public Kiwi::MouseEvent
