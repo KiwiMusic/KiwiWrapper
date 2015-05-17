@@ -80,7 +80,6 @@ namespace Kiwi
         if(thread.lockWasGained())
         {
             Component::setBounds(int(bounds.x()), int(bounds.y()), int(bounds.width()), int(bounds.height()));
-        
         }
     }
     
@@ -89,7 +88,6 @@ namespace Kiwi
         const MessageManagerLock thread(Thread::getCurrentThread());
         if(thread.lockWasGained())
         {
-            Component::setInterceptsMouseClicks(wantMouse(), true);
             Component::setWantsKeyboardFocus(wantKeyboard());
             sJuceGuiDeviceManager mng = m_device.lock();
             if(mng && wantActions())
@@ -283,7 +281,14 @@ namespace Kiwi
     
     void jView::mouseWheelMove(const juce::MouseEvent& event, const MouseWheelDetails& wheel)
     {
-        receive(jEventMouse(event, wheel));
+        if(!receive(jEventMouse(event, wheel)))
+        {
+            sjView parent = static_pointer_cast<jView>(getParent());
+            if(parent)
+            {
+                parent->receive(jEventMouse(event.getEventRelativeTo(parent.get()), wheel));
+            }
+        }
     }
     
     void jView::focusGained(FocusChangeType cause)
@@ -303,7 +308,8 @@ namespace Kiwi
     
     bool jView::hitTest(int x, int y)
     {
-        return GuiView::contains(Point(double(x + getX()), double(y + getY())));
+        //return GuiView::contains(Point(double(x + getX()), double(y + getY())));
+        return GuiView::hitTest(Point(x, y));
     }
 
     ApplicationCommandTarget* jView::getNextCommandTarget()
