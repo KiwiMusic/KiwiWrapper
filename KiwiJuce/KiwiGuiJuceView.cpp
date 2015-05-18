@@ -41,7 +41,11 @@ namespace Kiwi
     
     jView::~jView()
     {
-        ;
+        sJuceGuiDeviceManager mng = m_device.lock();
+        if(mng && wantActions())
+        {
+            this->removeKeyListener(mng->getKeyMappings());
+        }
     }
     
     void jView::redraw()
@@ -112,8 +116,8 @@ namespace Kiwi
             case Kiwi::MouseCursor::Copying                 : mc = juce::MouseCursor::CopyingCursor; break;
             case Kiwi::MouseCursor::HandPointing            : mc = juce::MouseCursor::PointingHandCursor; break;
             case Kiwi::MouseCursor::HandDragging            : mc = juce::MouseCursor::DraggingHandCursor; break;
-            case Kiwi::MouseCursor::RezizingLeftRight       : mc = juce::MouseCursor::LeftRightResizeCursor; break;
-            case Kiwi::MouseCursor::RezizingUpDown          : mc = juce::MouseCursor::UpDownResizeCursor; break;
+            case Kiwi::MouseCursor::ResizingLeftRight       : mc = juce::MouseCursor::LeftRightResizeCursor; break;
+            case Kiwi::MouseCursor::ResizingUpDown          : mc = juce::MouseCursor::UpDownResizeCursor; break;
             case Kiwi::MouseCursor::ResizingFourWay         : mc = juce::MouseCursor::UpDownLeftRightResizeCursor; break;
             case Kiwi::MouseCursor::ResizingTop             : mc = juce::MouseCursor::TopEdgeResizeCursor; break;
             case Kiwi::MouseCursor::ResizingBottom          : mc = juce::MouseCursor::BottomEdgeResizeCursor; break;
