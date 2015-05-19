@@ -36,7 +36,8 @@ namespace Kiwi
     m_device(device)
     {
         boundsChanged();
-        behaviorChanged();
+        setWantKeyboard(wantKeyboard());
+        setWantActions(wantActions());
     }
     
     jView::~jView()
@@ -87,18 +88,18 @@ namespace Kiwi
         }
     }
     
-    void jView::behaviorChanged()
+    void jView::setWantKeyboard(const bool wanted)
     {
-        const MessageManagerLock thread(Thread::getCurrentThread());
-        if(thread.lockWasGained())
+        Component::setWantsKeyboardFocus(wanted);
+    }
+    
+    void jView::setWantActions(const bool wanted)
+    {
+        sJuceGuiDeviceManager mng = m_device.lock();
+        if(mng && wantActions())
         {
-            Component::setWantsKeyboardFocus(wantKeyboard());
-            sJuceGuiDeviceManager mng = m_device.lock();
-            if(mng && wantActions())
-            {
-                mng->registerAllCommandsForTarget(this);
-                this->addKeyListener(mng->getKeyMappings());
-            }
+            mng->registerAllCommandsForTarget(this);
+            this->addKeyListener(mng->getKeyMappings());
         }
     }
     

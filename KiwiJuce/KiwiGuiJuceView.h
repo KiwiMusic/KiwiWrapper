@@ -46,7 +46,8 @@ namespace Kiwi
         void boundsChanged() override;
         void positionChanged() override;
         void sizeChanged() override;
-        void behaviorChanged() override;
+        void setWantKeyboard(const bool wanted) override;
+        void setWantActions(const bool wanted) override;
         void setMouseCursor(Kiwi::MouseCursor const& cursor) override;
         void grabFocus() override;
         void toBack() override;
