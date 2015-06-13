@@ -108,26 +108,26 @@ namespace Kiwi
         juce::MouseCursor mc;
         switch(cursor.type())
         {
-            case Kiwi::MouseCursor::Default                 : mc = juce::MouseCursor::ParentCursor; break;
-            case Kiwi::MouseCursor::None                    : mc = juce::MouseCursor::NoCursor; break;
-            case Kiwi::MouseCursor::Arrow                   : mc = juce::MouseCursor::NormalCursor; break;
-            case Kiwi::MouseCursor::Wait                    : mc = juce::MouseCursor::WaitCursor; break;
-            case Kiwi::MouseCursor::Ibeam                   : mc = juce::MouseCursor::IBeamCursor; break;
-            case Kiwi::MouseCursor::Crosshair               : mc = juce::MouseCursor::CrosshairCursor; break;
-            case Kiwi::MouseCursor::Copying                 : mc = juce::MouseCursor::CopyingCursor; break;
-            case Kiwi::MouseCursor::HandPointing            : mc = juce::MouseCursor::PointingHandCursor; break;
-            case Kiwi::MouseCursor::HandDragging            : mc = juce::MouseCursor::DraggingHandCursor; break;
-            case Kiwi::MouseCursor::ResizingLeftRight       : mc = juce::MouseCursor::LeftRightResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingUpDown          : mc = juce::MouseCursor::UpDownResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingFourWay         : mc = juce::MouseCursor::UpDownLeftRightResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingTop             : mc = juce::MouseCursor::TopEdgeResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingBottom          : mc = juce::MouseCursor::BottomEdgeResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingLeft            : mc = juce::MouseCursor::LeftEdgeResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingRight           : mc = juce::MouseCursor::RightEdgeResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingTopLeft         : mc = juce::MouseCursor::TopLeftCornerResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingTopRight        : mc = juce::MouseCursor::TopRightCornerResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingBottomLeft      : mc = juce::MouseCursor::BottomLeftCornerResizeCursor; break;
-            case Kiwi::MouseCursor::ResizingBottomRight     : mc = juce::MouseCursor::BottomRightCornerResizeCursor; break;
+            case Kiwi::MouseCursor::Type::Default                 : mc = juce::MouseCursor::ParentCursor; break;
+            case Kiwi::MouseCursor::Type::None                    : mc = juce::MouseCursor::NoCursor; break;
+            case Kiwi::MouseCursor::Type::Arrow                   : mc = juce::MouseCursor::NormalCursor; break;
+            case Kiwi::MouseCursor::Type::Wait                    : mc = juce::MouseCursor::WaitCursor; break;
+            case Kiwi::MouseCursor::Type::Ibeam                   : mc = juce::MouseCursor::IBeamCursor; break;
+            case Kiwi::MouseCursor::Type::Crosshair               : mc = juce::MouseCursor::CrosshairCursor; break;
+            case Kiwi::MouseCursor::Type::Copying                 : mc = juce::MouseCursor::CopyingCursor; break;
+            case Kiwi::MouseCursor::Type::HandPointing            : mc = juce::MouseCursor::PointingHandCursor; break;
+            case Kiwi::MouseCursor::Type::HandDragging            : mc = juce::MouseCursor::DraggingHandCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingLeftRight       : mc = juce::MouseCursor::LeftRightResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingUpDown          : mc = juce::MouseCursor::UpDownResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingFourWay         : mc = juce::MouseCursor::UpDownLeftRightResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingTop             : mc = juce::MouseCursor::TopEdgeResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingBottom          : mc = juce::MouseCursor::BottomEdgeResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingLeft            : mc = juce::MouseCursor::LeftEdgeResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingRight           : mc = juce::MouseCursor::RightEdgeResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingTopLeft         : mc = juce::MouseCursor::TopLeftCornerResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingTopRight        : mc = juce::MouseCursor::TopRightCornerResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingBottomLeft      : mc = juce::MouseCursor::BottomLeftCornerResizeCursor; break;
+            case Kiwi::MouseCursor::Type::ResizingBottomRight     : mc = juce::MouseCursor::BottomRightCornerResizeCursor; break;
             default: break;
         }
         
