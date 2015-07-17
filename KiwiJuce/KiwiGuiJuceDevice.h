@@ -199,6 +199,8 @@ namespace Kiwi
         Size getTextSize(wstring const& text, const double width = 0.) const noexcept override;
         
     };
+    
+    typedef shared_ptr<KiwiJuceGuiDeviceManager> sjGuiDeviceManager;
 }
 
 #endif

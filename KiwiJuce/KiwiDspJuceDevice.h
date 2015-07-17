@@ -192,6 +192,8 @@ namespace Kiwi
         void audioDeviceAboutToStart(AudioIODevice* device) override;
         void audioDeviceStopped() override;
     };
+    
+    typedef shared_ptr<KiwiJuceDspDeviceManager> sjDspDeviceManager;
 }
 
 #endif
